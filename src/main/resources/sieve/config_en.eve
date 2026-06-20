@@ -1,0 +1,838 @@
+DEFINE sh AS selfharm
+DEFINE ea AS abuse
+
+
+
+LET function(s) BE s OR z OR es OR ez OR ies OR iez OR y>ies OR y>iez OR ing OR ings OR ed OR er OR ers OR y OR ys
+LET function(vulnerable) BE kid OR kids OR child OR children OR kiddie OR kiddies OR baby OR babies OR babys OR minor OR minors OR son OR sons OR daughter OR daughters OR boy OR boys OR girl OR girls OR nephew OR niece OR toddler OR infant
+LET function(declarative) BE a OR the OR my OR your OR his OR her OR their OR that OR some
+LET function(accuse) BE you are OR you're OR youre OR ur a OR your a OR im a OR i'm a OR am a OR is a OR hes a OR he's a OR shes a OR she's a OR fuckin OR looking for OR are you a OR u a OR such a OR stop being OR stop acting like OR act like a OR dont be a OR don't be a
+LET function(sexverb) BE wore OR wear OR wearing OR worn OR use OR used OR using OR put OR putting OR stole OR stolen OR bought OR buy OR buying OR need OR needed OR want OR wanted OR bring OR brought OR forgot OR got OR grab OR grabbed OR slip OR slipped OR roll OR rolled OR without
+LET function(selfharmverb) BE neck OR hang OR off OR unalive OR cut OR slice OR shoot OR shot OR slit
+LET function(genderword) BE female OR girl OR woman OR womens OR male OR mens OR guy OR guys OR men OR man
+LET function(article) BE a OR an OR the OR on OR no OR my OR your OR his OR her OR some
+LET function(frenchstuff) (WHOLE) BE franger OR frenchie OR jizzbag OR french GAP letter OR cock GAP sock OR cum GAP catcher OR santa GAP sock OR jimmy GAP hat
+LET function(seeking) BE watch OR have OR havin OR got OR gotta OR need OR gimme OR give me OR send OR dm OR dms OR hit me up OR look OR searching OR search for OR where to find OR where can i OR wya for OR want OR wanna OR who has OR who got OR who selling OR anyone OR can i get OR let me see OR lemme see OR share OR trade OR sell OR buy OR purchase OR download OR leak OR drop the OR drop some OR droppin OR collection OR pic OR video OR vid OR content OR link OR menu OR catalog OR pack OR mega OR dropbox OR drop box OR onedrive OR gdrive OR google drive OR telegram OR discord OR nz OR db OR folder OR archive OR gb OR gigabyte OR mb OR megabyte OR tb OR terabyte
+LET function(subject) BE i OR im OR i'm OR me OR she OR shes OR she's OR he OR hes OR he's OR they OR we OR you OR ur OR you're OR youre OR my OR his OR her OR their OR she is OR he is OR they are OR i am OR we are OR you are OR who
+LET function(desire) BE want OR wanna OR wants OR wanting OR need OR needs OR needing OR have OR having OR has OR got OR gotta OR gimme OR give me OR send OR dm OR dms OR hit me up OR look OR looking for OR search for OR searching OR searching for OR where to find OR where can i find OR wya for OR who has OR who got OR who selling OR anyone selling OR can i get OR get OR get me OR gonna get OR gonna OR gonna have OR gonna want OR gonna need OR i want to OR i need to OR i wanna OR i have to OR want to OR need to OR have to OR desire to OR dream to OR please OR pls OR plz OR plese OR pse OR ps OR pplz OR ppls
+LET function(quantifier) BE NONE OR some OR any OR a OR an OR the OR that OR those OR this OR these OR em OR some of the OR some of these OR some of those OR some of this OR some of it
+
+REALM racial_and_ethnic_slurs
+
+HEAR rule
+AS
+  ni(ROOT)
+  suffix(g OR ga OR gga OR gger OR gl LETTER t)
+  PLURAL
+  NEVER(snigger OR sniggers OR sniggered OR sniggering OR sniggerer)
+  SKELETON(57:57(n!gg!r) OR 57:57(n!gg!h))
+
+HEAR rule
+AS
+  nga(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ngr(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(pha)
+  fa(ROOT)
+  suffix(g OR gg OR NONE)
+  suffix(ggot OR NONE)
+  suffix(ggie OR NONE)
+  suffix(gie OR NONE)
+  PLURAL
+  SKELETON(42:42(f!gg!t) OR 42:42(f!g!t))
+
+HEAR rule
+AS
+  bean(ROOT)
+  suffix(er)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(dike)
+  dyke(WHOLE)
+  PLURAL
+  NEVER(van dyke OR vandyke OR dikes OR dike system OR sea dike OR dijk OR dykes on bikes)
+
+HEAR rule
+AS
+  shemale(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  porchmonkey(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  spic(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  wetback(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(khin)
+  chin(ROOT)
+  suffix(k)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(gooc)
+  gook(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(koon)
+  coon(WHOLE)
+  PLURAL
+  NEVER(koons OR koonsdog OR jeff koons OR coon rapids)
+
+HEAR rule
+AS
+  kike(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(jiggaboo)
+  jigaboo(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  golliwog(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  sambo(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  wog(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(kaffer)
+  ALIAS(kafir)
+  kaffir(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  abbo(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(boonga)
+  boong(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(darky)
+  darkie(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  pickaninny(WHOLE)
+
+HEAR rule
+AS
+  spear
+  GAP
+  chucker(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  whitey(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(honkie)
+  ALIAS(honky)
+  honkey(WHOLE)
+  PLURAL
+  NEVER(honky tonk OR honky-tonk OR honkytonk)
+
+HEAR rule
+AS
+  moon(ROOT)
+  GAP
+  suffix(cricket)
+  PLURAL
+
+HEAR rule
+AS
+  jungle(ROOT)
+  GAP
+  suffix(bunny)
+  PLURAL
+
+HEAR rule
+AS
+  sand(ROOT)
+  GAP
+  suffix(nigger)
+  PLURAL
+
+HEAR rule
+AS
+  dune(ROOT)
+  GAP
+  suffix(coon)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(towelhead)
+  raghead(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  zipperhead(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  chinaman(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(gyppo)
+  gippo(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  dago(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  wop(WHOLE)
+  PLURAL
+  NEVER(doowop OR doo wop OR doowap OR doo wap OR dowap OR do wap OR do wop)
+
+HEAR rule
+AS
+  slant(ROOT)
+  GAP
+  suffix(eye)
+  PLURAL
+
+HEAR rule
+AS
+  tar
+  GAP
+  baby(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  troon(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  fudgepack(WHOLE)
+  suffix(er OR ers OR ing)
+
+REALM ableist
+
+HEAR rule
+AS
+  ALIAS(fuck)
+  re[tard] (WHOLE)
+  suffix(NONE OR d OR ded OR ted OR t OR der OR ders OR ing OR ed OR s)
+  NEVER(retardado OR retardados OR retardada OR retardadas OR retardatario OR retardo OR retardos OR retardataire OR retardateur OR ritardato OR ritardatario OR ritardo OR leotard OR leotards OR mustard OR mustards OR custard OR custards OR aquatard OR aquatards OR attarde OR bastard OR bastards)
+  SKELETON(12:22(r!t!rd))
+
+HEAR rule
+AS
+  mongoloid(WHOLE)
+  PLURAL
+
+REALM self_harm_sh_y_selfharmpossibility_not_an_attack
+
+HEAR rule
+AS
+  ky(ROOT)
+  suffix(s OR ys)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  kms(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ALIAS(function(selfharmverb))
+  kill(ROOT)
+  GAP
+  suffix(yo OR ur OR your OR yor)
+  suffix(self)
+  ALSO(wrists OR wrist OR throat)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ALIAS(function(selfharmverb))
+  kill(ROOT)
+  GAP
+  SWAP(my* OR me*)
+  suffix(self)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  blow(ROOT)
+  GAP
+  suffix(your OR my OR ur OR yor)
+  GAP
+  suffix(brains)
+  GAP
+  suffix(out)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ALIAS(wanta)
+  ALIAS(wanto)
+  ALIAS(want to)
+  wanna(ROOT)
+  GAP
+  suffix(die)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  go(ROOT)
+  GAP
+  suffix(die)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  drink(ROOT)
+  GAP
+  suffix(bleach)
+  FLAG(sh YES)
+
+REALM experiencing_abuse_ea_y_experiencingabusepossibility_the_speaker_is_a_victim
+
+HEAR rule
+AS
+  ALIAS(been)
+  got(ROOT)
+  GAP
+  suffix(rape OR grape)
+  GAP
+  suffix(d)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  ALIAS(grape)
+  rap(ROOT)
+  suffix(ed OR ing OR d)
+  GAP
+  suffix(me)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  abus(ROOT)
+  suffix(e OR es OR ed)
+  GAP
+  suffix(me)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  my(ROOT)
+  GAP
+  LETTERS
+  GAP
+  suffix(hit)
+  PLURAL
+  GAP
+  suffix(me)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  ALIAS(anal)
+  ALIAS(anally)
+  ALIAS(orally)
+  oral(ROOT)
+  GAP
+  suffix(rape OR raped OR rapeable OR rapable OR grape OR graped OR grapeable OR grapable OR fucked OR assaulted OR abused OR sex OR hurt OR violate OR violated)
+  FLAG(ea YES)
+
+REALM minors_and_predatory_behavior
+
+HEAR rule
+AS
+  child(ROOT)
+  GAP
+  suffix(porn OR pornography)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  cp
+  AFTER(mega OR pack OR packs OR nz OR db OR dropbox OR folder OR vids OR pics OR link OR links OR menu OR content OR gb OR tb OR mb)
+  (WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  pedo
+  AFTER(phile OR file OR lover OR luver OR lovr OR luvr)
+  (WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  groom(ROOT)
+  suffix(NONE OR ing OR ed)
+  GAP
+  MAYBE function(declarative)
+  GAP
+  function(vulnerable)
+
+HEAR rule
+AS
+  ALIAS(pedobare)
+  pedobear(WHOLE)
+
+HEAR rule
+AS
+  jail(ROOT)
+  GAP
+  suffix(bait)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  lolita(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  nambla(WHOLE)
+
+HEAR rule
+AS
+  pthc(WHOLE)
+
+HEAR rule
+AS
+  cherrypopper(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(bearly)
+  barely(ROOT)
+  GAP
+  suffix(legal)
+
+REALM sexual_vocabulary
+
+HEAR rule
+AS
+  ALIAS(rim)
+  ALIAS(foot)
+  ALIAS(blow)
+  hand(ROOT)
+  suffix(job)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(kunt)
+  cunt(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  function(subject + ADDITIVE + GAP)
+  function(desire + ADDITIVE + GAP)
+  function(quantifier + ADDITIVE + GAP)
+  rap(ROOT)
+  suffix(e OR ist OR ed OR ing OR eable OR able)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(klit)
+  clit(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  slut(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(hore)
+  whore(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(kamgirl)
+  camgirl(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(kam)
+  cam(ROOT)
+  GAP
+  suffix(girl)
+  PLURAL
+
+HEAR rule
+AS
+  dildo(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  gangbang(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(incestual)
+  ALIAS(incestuous)
+  incest(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(jiz)
+  ALIAS(jiss)
+  jizz(WHOLE)
+  suffix(NONE OR es OR ing OR ed)
+
+HEAR rule
+AS
+  ALIAS(cemen)
+  semen(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(3some)
+  threesome(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(4some)
+  foursome(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(buzt)
+  bust
+  GAP
+  a
+  GAP
+  nut(WHOLE)
+
+HEAR rule
+AS
+  no(ROOT)
+  GAP
+  suffix(homo)
+
+HEAR rule
+AS
+  poz(ROOT)
+  suffix(zer OR zing)
+  PLURAL
+
+HEAR rule
+AS
+  goon(WHOLE)
+  suffix(er OR ers OR ing)
+
+HEAR rule
+AS
+  ALIAS(hornee)
+  horny(WHOLE)
+  NEVER(horny toad OR horny toads OR horny corner)
+
+HEAR rule
+AS
+  fetish(WHOLE)
+  suffix(NONE OR es OR ing OR izing OR ized OR ed)
+
+HEAR rule
+AS
+  testicle(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  touch(ROOT)
+  GAP
+  suffix(ed OR ing OR es OR NONE)
+  GAP
+  suffix(herself OR himself OR myself OR yourself OR themselves OR themself OR itself OR theirself)
+
+HEAR rule
+AS
+  sex(ROOT)
+  suffix(t OR ting OR ter OR ted OR ualizing OR ualized OR ualize)
+
+HEAR rule
+AS
+  BEFORE(had sex OR have sex OR having sex OR want sex OR wanna sex OR wants sex OR wanting sex OR need sex OR want to have sex OR wanna have sex OR for sex OR gay sex OR anal sex OR oral sex OR rough sex OR hate sex OR car sex OR phone sex OR cyber sex OR cybersex OR hook up for OR sex with me OR sex with you OR have sex with OR fuck me OR sex tonight OR sex last night)
+  sex(WHOLE)
+  NEVER(sex ed OR sex education OR sex offender OR sex offenders OR same sex OR opposite sex OR sex of OR sex cells OR sex chromosome OR sex chromosomes OR sex drive OR sexuality OR sex appeal OR sex scene)
+
+HEAR rule
+AS
+  bdsm(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(4skin)
+  ALIAS(4scin)
+  foreskin(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(phap)
+  fap(WHOLE)
+  suffix(NONE OR ping OR ped)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(kum)
+  cum(WHOLE)
+  suffix(NONE OR s OR ming OR shot OR shots)
+  NEVER(kum bay OR kumbaya OR kum ba yah OR kumbayah OR cum laude OR cummings)
+
+HEAR rule
+AS
+  penis(WHOLE)
+  suffix(es)
+
+HEAR rule
+AS
+  boob(ROOT)
+  suffix(s OR z OR ies)
+
+HEAR rule
+AS
+  titties(WHOLE)
+
+HEAR rule
+AS
+  tits(WHOLE)
+
+HEAR rule
+AS
+  suck(ROOT)
+  GAP
+  suffix(my GAP OR NONE)
+  suffix(balls OR testicles OR cock OR dick OR asshole OR penis OR ass OR head)
+
+HEAR rule
+AS
+  eat(ROOT)
+  GAP
+  suffix(m LETTER GAP OR NONE)
+  suffix(ass OR clit OR shit OR out)
+
+HEAR rule
+AS
+  ALIAS(dick)
+  cock(ROOT)
+  GAP
+  suffix(tease OR head)
+
+HEAR rule
+AS
+  ja(ROOT)
+  suffix(ck OR g)
+  suffix(NONE OR ing)
+  GAP
+  suffix(off)
+
+HEAR rule
+AS
+  ALIAS(jerc)
+  jerk(ROOT)
+  GAP
+  suffix(off OR ing GAP off)
+
+HEAR rule
+AS
+  ALIAS(you)
+  ALIAS(she)
+  ALIAS(he)
+  ALIAS(they)
+  ALIAS(we)
+  i
+  GAP
+  finger(ROOT)
+  GAP
+  suffix(NONE OR ed OR s)
+  GAP
+  suffix(me OR you OR her OR him OR them OR us)
+
+HEAR rule
+AS
+  ALIAS(deap)
+  deep(ROOT)
+  GAP
+  suffix(throat)
+  suffix(s OR ing OR ed)
+
+HEAR rule
+AS
+  ALIAS(kreempie)
+  ALIAS(kreampie)
+  ALIAS(creempie)
+  creampie(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(orgazm)
+  orgasm(WHOLE)
+  suffix(NONE OR s OR ing OR ed)
+
+HEAR rule
+AS
+  BEFORE(going to OR gonna OR make me OR wanna OR give me OR having an OR had an)
+  organism(WHOLE)
+  PLURAL
+
+HEAR rule
+AS
+  ALIAS(masterb)
+  masturb(ROOT)
+  suffix(ate OR ating OR ation OR ated OR ates OR at)
+  SKELETON(57:57:57(m!st!rb!t) OR 57:57:57:57(m!st!rb!t!))
+
+HEAR rule
+AS
+  ejaculat(ROOT)
+  suffix(e OR es OR ing OR ed OR ion)
+
+HEAR rule
+AS
+  function(sexverb)
+  GAP
+  (ROOT)
+  suffix(function(article) OR box of OR a box of OR internal OR function(genderword) OR NONE)
+  GAP
+  suffix(condom OR condoms OR kondom OR kondoms OR condum OR condums OR rubber OR rubbers OR sheath OR sheaths OR johnny OR johnnie OR johnnies OR jimmy OR joey OR jonny)
+  function(frenchstuff)
+  PLURAL
+  NEVER(rubber band OR rubber bands OR rubber duck OR rubber ducks OR rubber duckie OR rubber ducky OR rubber tree OR rubber trees OR rubber boot OR rubber boots OR rubber glove OR rubber gloves OR rubber stamp OR rubber bullet OR rubber bullets OR rubber chicken OR rubber mat OR rubber sole OR rubber soles OR rubber tire OR rubber tyre OR rubber hose OR rubber seal OR rubber grip OR rubber gasket OR johnny appleseed OR johnny cash OR johnny depp OR johnny bravo OR johnny test OR jimmy fallon OR jimmy neutron OR jimmy john OR jimmy choo OR jimmy carter OR sheath knife OR sheathing)
+
+HEAR rule
+AS
+  ALIAS(function(genderword))
+  internal
+  GAP
+  condom(WHOLE)
+  PLURAL
+
+REALM preshipped_vowel_classes
+LET function(1) BE a
+LET function(2) BE e
+LET function(3) BE i
+LET function(4) BE o
+LET function(5) BE u
+LET function(6) BE y
+LET function(7) BE a OR e
+LET function(8) BE a OR i
+LET function(9) BE a OR o
+LET function(10) BE a OR u
+LET function(11) BE a OR y
+LET function(12) BE e OR i
+LET function(13) BE e OR o
+LET function(14) BE e OR u
+LET function(15) BE e OR y
+LET function(16) BE i OR o
+LET function(17) BE i OR u
+LET function(18) BE i OR y
+LET function(19) BE o OR u
+LET function(20) BE o OR y
+LET function(21) BE u OR y
+LET function(22) BE a OR e OR i
+LET function(23) BE a OR e OR o
+LET function(24) BE a OR e OR u
+LET function(25) BE a OR e OR y
+LET function(26) BE a OR i OR o
+LET function(27) BE a OR i OR u
+LET function(28) BE a OR i OR y
+LET function(29) BE a OR o OR u
+LET function(30) BE a OR o OR y
+LET function(31) BE a OR u OR y
+LET function(32) BE e OR i OR o
+LET function(33) BE e OR i OR u
+LET function(34) BE e OR i OR y
+LET function(35) BE e OR o OR u
+LET function(36) BE e OR o OR y
+LET function(37) BE e OR u OR y
+LET function(38) BE i OR o OR u
+LET function(39) BE i OR o OR y
+LET function(40) BE i OR u OR y
+LET function(41) BE o OR u OR y
+LET function(42) BE a OR e OR i OR o
+LET function(43) BE a OR e OR i OR u
+LET function(44) BE a OR e OR i OR y
+LET function(45) BE a OR e OR o OR u
+LET function(46) BE a OR e OR o OR y
+LET function(47) BE a OR e OR u OR y
+LET function(48) BE a OR i OR o OR u
+LET function(49) BE a OR i OR o OR y
+LET function(50) BE a OR i OR u OR y
+LET function(51) BE a OR o OR u OR y
+LET function(52) BE e OR i OR o OR u
+LET function(53) BE e OR i OR o OR y
+LET function(54) BE e OR i OR u OR y
+LET function(55) BE e OR o OR u OR y
+LET function(56) BE i OR o OR u OR y
+LET function(57) BE a OR e OR i OR o OR u
+LET function(58) BE a OR e OR i OR o OR y
+LET function(59) BE a OR e OR i OR u OR y
+LET function(60) BE a OR e OR o OR u OR y
+LET function(61) BE a OR i OR o OR u OR y
+LET function(62) BE e OR i OR o OR u OR y
+LET function(63) BE a OR e OR i OR o OR u OR y

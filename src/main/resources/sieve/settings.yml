@@ -1,0 +1,335 @@
+# Verité settings
+
+# The public facing prefix on every Verité message (MiniMessage format)
+prefix: "<#555555>[<#B1C7F0>Verité<#555555>]<reset>"
+
+# Verité components
+# Each component is independent:
+# Turn one off and the other still runs. Both default `on`.
+
+components:
+  veritechasse: # Anti-cheat module.
+    enabled: true
+  veritedoux: # Chat filter module.
+    enabled: true
+  veritesauver: # Moderation module.
+    enabled: true
+
+# ---- Veritésauver (moderation) ----
+
+sauver:
+# Block a banned player's alts (other accounts on the same IP) at login.
+  ban_alts: false
+
+  mutes:
+# Commands a muted player may not use (chat in disguise).
+    command_blacklist:
+      - "hear rule as [+[($^):]]me[^^]"
+      - "hear rule as [+[($^):]]say[^^]"
+      - "hear rule as [+[($^):]]tell[^^]"
+      - "hear rule as [+[($^):]]whisper[^^]"
+      - "hear rule as [+[($^):]]reply[^^]"
+      - "hear rule as [+[($^):]]pm[^^]"
+      - "hear rule as [+[($^):]]message[^^]"
+      - "hear rule as [+[($^):]]msg[^^]"
+      - "hear rule as [+[($^):]]msgall[^^]"
+      - "hear rule as [+[($^):]]tellall[^^]"
+      - "hear rule as [+[($^):]]speak[^^]"
+      - "hear rule as [+[($^):]]emsg[^^]"
+      - "hear rule as [+[($^):]]epm[^^]"
+      - "hear rule as [+[($^):]]etell[^^]"
+      - "hear rule as [+[($^):]]ewhisper[^^]"
+      - "hear rule as [+[($^):]]w[^^]"
+      - "hear rule as [+[($^):]]m[^^]"
+      - "hear rule as [+[($^):]]t[^^]"
+      - "hear rule as [+[($^):]]r[^^]"
+      - "hear rule as [+[($^):]]mail[^^]"
+
+  warnings:
+# How long a warning counts as active before it lapses.
+    expire_after: 7d
+
+  durations:
+# Clamp an over-limit duration to the cap instead of rejecting it.
+    reduce_to_limit: true
+
+  exempt:
+# Compare LuckPerms group weight so staff cannot punish equal/higher ranks.
+    use_group_weights: false
+# Allow acting on an equal-weight target when use_group_weights is on.
+    permit_same_weight: true
+
+  notify:
+# Most accounts to show in a dupeip-on-join scan.
+    dupeip_scan_limit: 20
+
+# Durations: 30s 10m 2h 7d 2w 1mo 1y, "2 weeks"/"1 month"
+  templates:
+    ban-templates:
+      Cheating:
+        reason: 'Cheating'
+        ladder:
+          second: { duration: permanent }
+          first:  { duration: 30d }
+        expire_ladder: permanent
+        ip_template: false
+    mute-templates:
+      Spam:
+        reason: 'Spamming'
+        ladder:
+          third:  { duration: 14d }
+          second: { duration: 3d }
+          first:  { duration: 12h, message: 'Please stop spamming.' }
+        expire_ladder: 90d
+        ip_template: false
+    warn-templates: {}
+    kick-templates: {}
+
+# ---- Veritéchasse (anticheat) ----
+
+alerts:
+  format: '<white>%player% <#FF5555>failed <#B1C7F0>%check%<white>.'
+  print-to-console: true
+  console-format: '[Verité] %player% failed %check%'
+
+# Flip any line to false to disable that family.
+checks:
+
+# Disabling any of these groups will disable the entire editor below.
+# Switch to "disabled" to turn off the whole group.
+  combat: enabled
+  movement: enabled
+  world: enabled
+  packets: enabled
+
+# Disabling any of these will disable the individual check,
+# but not the group. Use this to fine-tune your anticheat.
+# Switch to "false" to turn off the individual check.
+  # combat
+  reach: true # Hitting entities from beyond reach.
+  hitbox: true # Attacks that miss the target's hitbox.
+  killaura: true # Inhuman combat rotations and snapping.
+  criticals: true # Faking critical hits without jumping.
+  autoclicker: true # Inhuman click speed or consistency.
+  autoblock: true # Attacking while blocking with a shield.
+  velocity: true # Taking reduced knockback (anti-velocity).
+  fastbow: true # Firing a bow faster than it can draw.
+  length: true # Interacting beyond vanilla reach.
+  # movement
+  speed: true # Moving faster than legal horizontally.
+  motion: true # Replayed or fabricated movement deltas.
+  sprint: true # Sprinting while moving backwards.
+  strafe: true # Air control beyond what vanilla allows.
+  step: true # Stepping up more than a vanilla step.
+  highjump: true # Jumping higher or longer than vanilla.
+  fastclimb: true # Climbing ladders/vines too fast (spider).
+  wallclimb: true # Climbing a non-climbable wall.
+  antilevitation: true # Descending while under levitation.
+  nofall: true # Avoiding fall damage.
+  noslow: true # Not slowing in webs / while using items.
+  phase: true # Clipping through solid blocks (noclip).
+  vclip: true # Single-tick vertical clip through blocks.
+  flight: true # Invalid vertical motion (fly).
+  elytrafly: true # Non-vanilla elytra hover or lift.
+  boatfly: true # Boats ignoring gravity.
+  jesus: true # Walking on / not sinking in water.
+  # world
+  scaffold: true # Inhuman bridging / placement.
+  tower: true # Towering straight up too fast.
+  airplace: true # Placing blocks against nothing.
+  nuker: true # Breaking many blocks at once / out of view.
+  fastplace: true # Placing blocks faster than a human.
+  fastbreak: true # Breaking a block faster than its break time.
+  fastuse: true # Finishing item use faster than vanilla.
+  autofarm: true # Robotic farming cadence / silent farming.
+  autofish: true # Robotically consistent fishing reactions.
+  timer: true # Running game time faster than real time.
+  # packets
+  blink: true # Withholding then flushing movement packets.
+  baritone: true # Pathfinding bot movement signature.
+  autowalk: true # Walking with frozen rotation.
+  groundspoof: true # Faking onGround while airborne.
+  spoofer: true # Withholding transaction/ping responses.
+  entityspoof: true # Riding / controlling illegal mounts.
+  chunkoverloader: true # Crossing chunks at an unrealistic rate.
+  voidbearer: true # Descending endlessly below the world.
+  guiinteract: true # Moving while a container GUI is open.
+  badpackets: true # Malformed or exploit movement packets.
+  hackedclient: true # Known cheat-client channels / brands.
+  inventory: true # Inventory clicks faster than humanly possible.
+
+# ---- Veritédoux (EVE chat filter) ----
+
+# Verité has no plans to support glyph-dominated languages such as Hiragana, Katakana, Kanji,
+# Korean, or Mandarin Chinese. Minecraft's IME does not cleanly support CJK and has not since its
+# creation; we will consider the addition once Minecraft moves forward with better IME implementation.
+# We wish to be able to add CJK support in the future if that happens, 
+# as this is not a limitation of the filter architecture but of Minecraft's IME. 
+# For now, we focus on languages that can be reasonably typed with a Latin alphabet.
+
+# ---- Which languages to load? ----
+languages:
+  english: true
+  spanish: true
+  french: true
+  italian: true
+  portuguese: true
+  german: true
+
+# ---- Which categories fire? ----
+categories:
+  block: true
+  self_harm: true # reported as SELF_HARM (a possible at-risk speaker, handle gently)
+  abuse: true # reported as ABUSE (a possible victim, never punitive)
+  profanity: false # reported as PROFANITY (general swearing; the strict-mode toggle) Default OFF
+
+# Evasion passes. Direct whole-word matching is always on; these catch obfuscation but cost
+# CPU per clean message. Turn off to go faster on a low-evasion server.
+evasion:
+  homoglyph_fold: true # fullwidth / Cyrillic / math-bold letter spoofs -> ascii
+  entity_strip: true # &#8221;evil person -> evil person
+  deobfuscate: true # e!v!i!l!p!e!r!s!o!n / spaced-out words
+  segmentation: true # youareaevilperson -> you are a evil person
+  fingerprint: true # transposed slurs (eivl preosn)
+
+# ---- The notice shown when a message is blocked ----
+# Supports &-codes and &#RRGGBB hex. Default uses the Verité prefix shape.
+block_message: "&#555555[&#B1C7F0Verité&#555555] &#FFFFFFYour message wasn't sent. Please keep chat friendly."
+
+# This will soon become send_reports.
+# This flag will allow you to voluntarily send reports to the Verité team when a message is 
+# blocked. This is off by default, but we encourage you to turn it on if 
+# you can, as it helps us improve the filter.
+log_flags: true
+# When log_flags is true, you will get a warning 
+# upon reloading the config and/or server. This is to
+# alert you to the removal of log_flags in a future version,
+# and encourage you to switch to the new send_reports flag when it is added.
+
+
+# ---- Confusing things that we don't even use ----
+# Per-token language prediction (only matters when more than one language 
+# is loaded). Each word gets a probability over the loaded languages, so
+# a collision word (pedo = English slur vs Spanish
+# "fart") is judged by the language of the span it sits in.
+# These fields shape that.
+language:
+  context_weight: 0.6 
+# 0..1, how hard neighbouring words pull a word's language. 
+# Higher = a word leans more on its neighbours, less on its own base rate.
+  smoothing_passes: 3       
+# How many times the neighbour pull is applied across the line.
+  known_word_weight: 50
+# Weight for a word a language's dictionary knows but the rate table
+# doesn't list. Higher = dictionary membership counts for more.
+  unknown_word_weight: 0.1
+# floor weight for a word no dictionary knows and the table omits.
+
+# Per player trust ("stones"). A score 0..200 that grades a player 
+# harsher or more leniently. It modulates the filter but doesn't replace it: 
+# A real slur is still caught. This toggle is OFF by default.
+stones:
+  enabled: false
+  start: 85 # a brand-new player starts here
+  base: 150 # baseline everyone settles at after the probation window
+  cap: 200 # maximum trust
+  min_band: 85 # below this, grading is harsher and the escalation stacks
+  prelim_minutes: 15 # first N minutes are downward-only: can be punished, cannot earn trust
+  per_syllable: 0.3 # trust points a clean message adds, per syllable of content
+  penalty_step: 0.15 # extra harshness added per repeat offence while under min_band
+  penalty_max: 1.0 # cap on the escalation term
+# Grade-multiplier curve: score -> multiplier (>1 harsher, <1 lenient).
+# Monotone (more trust never grades harsher). 
+# Two parallel lists; same length. Drag a point to retune, no recompile.
+  curve_score:      [0,   85,  150, 200]
+  curve_multiplier: [1.6, 1.4, 1.0, 0.9]
+
+# EVE syntactical system  (expandaEVE)
+# Every operator has a short SYMBOL form and a readable WORD form (shown: symbol / WORD). Both mean
+# the same thing and may be mixed freely. Keywords are case-insensitive (UPPERCASE shown for clarity).
+
+# ---- Line types ----
+
+#    HEAR rule / AS ...        : a fuzzy (evasion-aware) rule. The bulk of a config.
+#    MATCH rule / AS ...       : a strict, anchored rule (structured text, captures).
+#    LET function(name) BE a OR b   : define a reusable word-set, called as function(name) / &name.
+#    REALM name                : group the rules that follow (cosmetic, for organising).
+
+# ---- Markers ( [^^] / (WHOLE)  and  [*^] / (ROOT) ) ----
+# One pair, on a root, alias, or function. It decides ONE thing: does this fire on its own?
+
+#    [^^] / (WHOLE) : WHOLE WORD. Fires by itself, no arm needed. Use for complete words (cunt(WHOLE)).
+#    [*^] / (ROOT)  : STEM. Never fires alone, needs an arm after it (chin(ROOT) suffix(k)).
+#    A trailing marker covers the whole root sequence: dune GAP (ROOT)  ==  dune(#*)[*^].
+#    Get this wrong and a rule silently never matches.
+
+# ---- Checks / suffix (the parts after a root) ----
+
+#    [a|b|c] / suffix(a OR b OR c) : one of these must sit here.
+#    [a|b|]  / suffix(a OR b OR NONE) : the empty/NONE option makes the position optional.
+#    | / OR  : separates options.
+
+# ---- Functions ----
+
+#    &name / function(name)   : drops the set's members in as options. Works as a check, a root, inline, or in BEFORE/NEVER.
+#    &!name / MAYBE function(name) : the function group, but optional (can be skipped).
+#    &name[^^] / function(name) (WHOLE) : give the members a marker. (WHOLE) = hard standalone words; (ROOT) = plain options.
+#    &1..&63  : pre-shipped vowel slots (members are vowels). Only used inside SKELETON.
+#    &s / PLURAL : the rich plural set (s/z/es/ies/ing/ed/er/ers/y/...). Write PLURAL once at the end.
+
+# ---- Comments ----
+#    {#c:...} / NOTE(...) : a comment. Does not affect the rule; useful for notes.
+
+# ---- Gaps and wildcards ----
+
+#    (#*) / GAP     : eats zero+ non-letters (spaces, punctuation). Put between words: evil GAP person.
+#    ($^) / LETTERS : eats zero+ letters.
+#    @ / LETTER     : exactly one letter, any letter. wom LETTER ns = womans/womens/womyns.
+
+# ---- Overrides (aliases of the root) ----
+
+#    [name;] / ALIAS(name)          : also match with name swapped for the root. Stacks.
+#    [&fn;]  / ALIAS(function(fn))  : a function-set as the alias.
+#    [name^^;] / ALIAS(name (WHOLE)) : an alias with its own marker, overriding the root's.
+
+# ---- Add ( + ) and exclude ( - ) parts ----
+
+#    [+[a|b|]]root / function(x + ADDITIVE) : + before the root, an optional prefix that may lead it.
+#    root[+[a]] / ... ALSO(a OR b)          : + after, an optional middle word, same order ("cut your wrists" / "cut wrists").
+#    [-[a|b]]  / NEVER(a OR b)               : - veto, suppress the rule if the line contains a or b. The mirror of BEFORE.
+
+# ---- Context gating (block only when actually bad) ----
+
+#    {pre:a|b}  / BEFORE(a OR b) : only fire if the whole line also contains a or b.
+#    x{post:a|b} / x AFTER(a OR b) (WHOLE) : x+suffix self-justifies and skips the BEFORE gate.
+
+# ---- Category flags (change what a match reports) ----
+
+#    (none)        : reports BLOCK (the default).
+#    FLAG(sh YES)  : reports SELF_HARM (speaker may be at risk; never punish).
+#    FLAG(ea YES)  : reports ABUSE (speaker may be a victim; never punish).
+#    FLAG(pf YES)  : reports PROFANITY (general swearing; off by default).
+#    FLAG(name YES/NO) is the general form -- any flag name, true or false; the host decides its meaning.
+
+# ---- Misspelling catcher ----
+
+#    {skel:f&42gg&42t} / SKELETON(42:42(f!gg!t)) : a skeleton. The N:N map fills each ! slot with that
+#    vowel class, left to right. Expands to every vowel combo at load. Only for 4+ consonant words. Always test it.
+
+# ---- Advanced roots (rarely needed) ----
+
+#    &verbs(#*)[*^] / function(verbs) GAP (ROOT) : function as root; every member is a root sharing the chain.
+#    [[re][tard*]][^^] / re[tard] (WHOLE)        : segmented root; the bracketed piece can start alone (tard) or with the prefix (retard).
+
+
+# How to say Verité:
+
+# You can remember this in 3 easy steps:
+# 1) Your childhood best friend, Verity
+# 2) All-star pop icon, Tay-Tay Swift
+# 3) COMBINE THEM!
+# Ver (as in "fair" or Dracula "vhere it is at?!") +
+# It (as in "it's over there!") 
+# Tay (as in "Tay-Tay the best queen ever")"
+
+# ---- And that's it! You've read the whole config, you little nerd, you! ----

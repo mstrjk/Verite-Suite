@@ -1,0 +1,331 @@
+DEFINE sh AS selfharm
+DEFINE ea AS abuse
+
+
+
+
+REALM classes_classes
+LET function(vulnerable) BE crianca OR criancas OR menino OR menina OR meninos OR meninas OR garoto OR garota OR garotos OR garotas OR guri OR guria OR moleque OR pia OR bebe OR bebe OR nenem OR nene OR menor OR filho OR filha OR filhinho OR filhinha OR sobrinho OR sobrinha OR novinho OR novinha OR criancinha OR pirralho OR fedelho OR miudo OR miuda
+LET function(declarative) BE o OR a OR os OR as OR um OR uma OR uns OR umas OR meu OR minha OR meus OR minhas OR teu OR tua OR seu OR sua OR esse OR essa OR este OR esta OR aquele OR aquela OR algum OR alguma
+LET function(accuse) BE voce e um OR voce e uma OR vc e um OR vc e uma OR tu es um OR tu es uma OR parece um OR parece uma OR age como OR aje como OR para de ser OR deixa de ser OR so pode ser OR so podes ser OR o seu OR o sua OR bando de OR seu grande OR sua grande
+LET function(seeking) BE preciso OR quero OR queria OR me manda OR chama no pv OR chama no privado OR me chama OR onde acho OR onde encontro OR onde tem OR quem tem OR alguem tem OR vendo OR vende OR compro OR troco OR troca OR baixar OR download OR leak OR vazou OR vazado OR mega OR pasta OR colecao OR acervo OR arquivo OR fotos OR nudes OR videos OR conteudo OR material
+
+REALM insultos_raciais_e_etnicos_racial_and_ethnic_slurs
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  macac(ROOT)
+  suffix(o OR a OR os OR as)
+
+HEAR rule
+AS
+  viad(ROOT)
+  suffix(o OR os OR inho OR inhos OR inha OR inhas OR ao OR ao OR ona OR onas)
+  NEVER(enviado OR enviados OR enviada OR enviadas OR reenviado OR reenviada OR desviado OR desviada OR desviados OR desviadas OR aviado OR aviada OR aliviado OR aliviada OR aliviados)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  veado(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  bich(ROOT)
+  suffix(a OR as OR inha OR ona)
+
+HEAR rule
+AS
+  paneleir(ROOT)
+  suffix(o OR a OR os OR as)
+
+HEAR rule
+AS
+  boiol(ROOT)
+  suffix(a OR as OR o OR os)
+
+HEAR rule
+AS
+  baitol(ROOT)
+  suffix(a OR as OR o OR os)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  maric(ROOT)
+  suffix(a OR as)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  sapat(ROOT)
+  suffix(ao OR ao OR ona OR onas)
+
+HEAR rule
+AS
+  travec(ROOT)
+  suffix(o OR a OR os OR as)
+
+REALM capacitismo_ableist
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  retardad(ROOT)
+  suffix(o OR a OR os OR as)
+
+HEAR rule
+AS
+  mongoloide(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  mong(ROOT)
+  suffix(o OR os OR ao OR ao OR ol OR ois)
+
+REALM automutilacao_self_harm_sh_y_selfharmpossibility_nao_e_um_ataque_not_an_attack
+
+HEAR rule
+AS
+  kys(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  se
+  GAP
+  mat(ROOT)
+  suffix(a OR e OR ar OR em OR es)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  mata(ROOT)
+  GAP
+  suffix(te)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  vai(ROOT)
+  GAP
+  suffix(morrer)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  se(ROOT)
+  GAP
+  suffix(enforca OR enforque OR afoga OR afogue)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  corta(ROOT)
+  GAP
+  ALSO(os OR as OR teus OR tuas)
+  GAP
+  suffix(pulsos OR pulso OR veias)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  bebe(ROOT)
+  GAP
+  ALSO(a)
+  GAP
+  suffix(veneno OR alvejante OR cloro OR candida OR candida)
+  FLAG(sh YES)
+
+REALM sofrer_abuso_experiencing_abuse_ea_y_experiencingabusepossibility_quem_fala_e_uma_vitima_the_speaker_is_a_victim
+
+HEAR rule
+AS
+  me(ROOT)
+  GAP
+  suffix(estupraram OR estuprou OR violaram OR violentaram OR violou OR abusaram OR molestaram OR tocou)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  fui(ROOT)
+  GAP
+  suffix(estuprada OR estuprado OR violada OR violado OR abusada OR abusado OR molestada OR molestado OR violentada OR violentado)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  abusaram
+  GAP
+  de(ROOT)
+  GAP
+  suffix(mim)
+  FLAG(ea YES)
+
+REALM menores_e_comportamento_predatorio_minors_and_predatory_behavior
+
+HEAR rule
+AS
+  porn(ROOT)
+  suffix(o OR o OR ografia OR ografias)
+  GAP
+  suffix(infantil OR infantis)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  cp
+  AFTER(mega OR pack OR packs OR nz OR db OR dropbox OR pasta OR vids OR pics OR link OR links OR conteudo OR conteudo OR gb OR tb OR mb)
+  (WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  pedo
+  AFTER(filo OR filos OR fila OR filas OR filia OR filico OR filico)
+  (WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  groomer(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  alici(ROOT)
+  suffix(ar OR ando OR ou OR amento OR ado OR ador)
+  GAP
+  MAYBE function(declarative)
+  GAP
+  function(vulnerable)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  lolita(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  nambla(WHOLE)
+
+HEAR rule
+AS
+  pthc(WHOLE)
+
+HEAR rule
+AS
+  jailbait(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  nude(ROOT)
+  suffix(s OR NONE)
+  GAP
+  ALSO(de OR da OR do)
+  GAP
+  MAYBE function(declarative)
+  GAP
+  function(vulnerable)
+
+REALM vocabulario_sexual_sexual_vocabulary
+
+HEAR rule
+AS
+  boquete(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  masturb(ROOT)
+  suffix(ar OR ando OR acao OR acao OR a OR o OR ou OR am)
+
+HEAR rule
+AS
+  esporr(ROOT)
+  suffix(a OR ar OR ada OR ado OR ou OR ando)
+
+HEAR rule
+AS
+  tesud(ROOT)
+  suffix(o OR a OR os OR as)
+
+HEAR rule
+AS
+  incest(ROOT)
+  suffix(o OR uoso OR uosa OR ual)
+
+HEAR rule
+AS
+  camgirl(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  cam(ROOT)
+  GAP
+  suffix(girl OR girls)
+
+HEAR rule
+AS
+  sexo(ROOT)
+  GAP
+  suffix(anal OR oral OR grupal)
+
+HEAR rule
+AS
+  gangbang(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  chupar(ROOT)
+  GAP
+  suffix(pau OR pinto OR rola OR buceta OR piroca OR caralho OR pica OR pica OR cu)
+
+HEAR rule
+AS
+  comer(ROOT)
+  GAP
+  ALSO(o OR a)
+  GAP
+  suffix(cu OR buceta OR rabo OR piroca)
+
+REALM classes_de_vogais_preincluidas_preshipped_vowel_classes
+LET function(1) BE a
+LET function(2) BE e
+LET function(3) BE i
+LET function(4) BE o
+LET function(5) BE u
+LET function(6) BE a OR e
+LET function(7) BE a OR i
+LET function(8) BE a OR o
+LET function(9) BE a OR u
+LET function(10) BE e OR i
+LET function(11) BE e OR o
+LET function(12) BE e OR u
+LET function(13) BE i OR o
+LET function(14) BE i OR u
+LET function(15) BE o OR u
+LET function(16) BE a OR e OR i
+LET function(17) BE a OR e OR o
+LET function(18) BE a OR e OR u
+LET function(19) BE a OR i OR o
+LET function(20) BE a OR i OR u
+LET function(21) BE a OR o OR u
+LET function(22) BE e OR i OR o
+LET function(23) BE e OR i OR u
+LET function(24) BE e OR o OR u
+LET function(25) BE i OR o OR u
+LET function(26) BE a OR e OR i OR o
+LET function(27) BE a OR e OR i OR u
+LET function(28) BE a OR e OR o OR u
+LET function(29) BE a OR i OR o OR u
+LET function(30) BE e OR i OR o OR u
+LET function(31) BE a OR e OR i OR o OR u

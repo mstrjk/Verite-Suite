@@ -1,0 +1,10 @@
+build/
+.gradle/
+out/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+!libs/eve.jar
+server-libs/
+.idea/
+*.iml

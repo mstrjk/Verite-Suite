@@ -1,0 +1,6 @@
+build-cm/
+build-jni/
+build/
+java/native/
+test/golden_*.tsv
+*.exe

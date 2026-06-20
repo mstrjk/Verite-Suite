@@ -1,0 +1,427 @@
+DEFINE sh AS selfharm
+DEFINE ea AS abuse
+
+
+
+
+REALM klassen_classes
+LET function(vulnerable) BE kind OR kinder OR kleinkind OR baby OR saugling OR saeugling OR minderjahrig OR minderjaehrig OR minderjahrige OR minderjahriger OR sohn OR tochter OR junge OR madchen OR maedchen OR bub OR neffe OR nichte OR enkel OR enkelin OR teenie OR teeny OR jugendliche OR jugendlicher
+LET function(declarative) BE der OR die OR das OR den OR dem OR des OR ein OR eine OR einen OR einem OR einer OR mein OR meine OR meinen OR dein OR deine OR sein OR seine OR ihr OR ihre OR dieser OR diese OR dieses OR jener
+LET function(accuse) BE du bist ein OR du bist eine OR du bist so ein OR du bist so eine OR so ein OR so eine OR voll der OR voll die OR du suchst OR du benimmst dich wie ein OR hor auf OR hoer auf OR sei nicht so ein OR du verdammter OR du dreckiger OR du kleiner OR du bloder
+LET function(seeking) BE ich hab OR brauche OR ich will OR suche nach OR wer hat OR schick mir OR schreib mir OR per pn OR ins privat OR wo finde ich OR wo gibt es OR woher OR verkaufe OR zu verkaufen OR tausche OR biete OR runterladen OR geleakt OR sammlung OR ordner OR mega OR dropbox OR bilder OR fotos OR videos OR clips OR nudes
+
+REALM rassistische_und_ethnische_beleidigungen_racial_and_ethnic_slurs
+
+HEAR rule
+AS
+  neger(WHOLE)
+  suffix(in OR innen OR s OR lein)
+
+HEAR rule
+AS
+  nigger(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  nigga(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  ALIAS(kanacke)
+  ALIAS(kannake)
+  kanak(ROOT)
+  suffix(e OR en OR in OR innen)
+
+HEAR rule
+AS
+  zigeuner(WHOLE)
+  suffix(in OR innen OR s)
+  NEVER(zigeunersauce OR zigeunerschnitzel OR zigeuner sauce OR zigeuner schnitzel OR zigeunersoße OR zigeunersosse)
+
+HEAR rule
+AS
+  schlitzauge(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  schlitzi(WHOLE)
+
+HEAR rule
+AS
+  ALIAS(pollacke)
+  polack(ROOT)
+  suffix(e OR en OR in OR innen)
+
+HEAR rule
+AS
+  tschusch(WHOLE)
+  suffix(en OR n)
+
+HEAR rule
+AS
+  ziegenficker(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  sand(ROOT)
+  GAP
+  suffix(nigger OR neger)
+  suffix(s)
+
+HEAR rule
+AS
+  judensau(WHOLE)
+
+HEAR rule
+AS
+  drecksjude(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  saujude(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  judenpack(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  jude(WHOLE)
+  suffix(n)
+
+REALM ableist
+
+HEAR rule
+AS
+  spast(WHOLE)
+  suffix(i OR is OR en OR os)
+
+HEAR rule
+AS
+  spacko(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  spacken(WHOLE)
+
+HEAR rule
+AS
+  mongo(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  mongoloid(WHOLE)
+  suffix(e OR en)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  kruppel(WHOLE)
+  suffix(s)
+
+REALM anti_lgbt
+
+HEAR rule
+AS
+  schwucht(ROOT)
+  suffix(el OR eln OR l)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  transe(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  tunte(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  kampflesbe(WHOLE)
+  suffix(n)
+
+HEAR rule
+AS
+  mannweib(WHOLE)
+  suffix(er)
+
+HEAR rule
+AS
+  schwanzlutscher(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  arschficker(WHOLE)
+  suffix(s)
+
+REALM selbstverletzung_self_harm_sh_y_selfharmpossibility_kein_angriff_not_an_attack
+
+HEAR rule
+AS
+  kys(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  bring(ROOT)
+  GAP
+  ALSO(dich)
+  GAP
+  suffix(um)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  tote(ROOT)
+  GAP
+  suffix(dich)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  geh(ROOT)
+  GAP
+  suffix(sterben)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  stirb(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  hang(ROOT)
+  GAP
+  ALSO(dich)
+  GAP
+  suffix(auf)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ritz(ROOT)
+  GAP
+  suffix(dich)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  trink(ROOT)
+  GAP
+  ALSO(die OR etwas)
+  GAP
+  suffix(bleiche OR chlor OR bleichmittel)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  spring(ROOT)
+  GAP
+  ALSO(von OR von der)
+  GAP
+  suffix(brucke OR brucke)
+  FLAG(sh YES)
+
+REALM missbrauch_erleben_experiencing_abuse_ea_y_experiencingabusepossibility_der_sprecher_ist_ein_opfer_the_speaker_is_a_victim
+
+HEAR rule
+AS
+  hat
+  GAP
+  mich(ROOT)
+  GAP
+  suffix(vergewaltigt OR missbraucht OR angefasst OR begrapscht OR geschlagen OR gezwungen)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  wurde(ROOT)
+  GAP
+  suffix(vergewaltigt OR missbraucht OR geschlagen)
+  FLAG(ea YES)
+
+REALM sex_vokabular_sexual_vocabulary
+
+HEAR rule
+AS
+  blowjob(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  deepthroat(WHOLE)
+
+HEAR rule
+AS
+  analsex(WHOLE)
+
+HEAR rule
+AS
+  oralsex(WHOLE)
+
+HEAR rule
+AS
+  gangbang(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  bukkake(WHOLE)
+
+HEAR rule
+AS
+  inzest(WHOLE)
+
+HEAR rule
+AS
+  camgirl(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  camsex(WHOLE)
+
+HEAR rule
+AS
+  dickpic(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  abspritzen(WHOLE)
+
+HEAR rule
+AS
+  masturb(ROOT)
+  suffix(ieren OR iert OR ierst OR ation OR iere)
+
+REALM minderjahrige_und_ausbeuterisches_verhalten_minors_and_predatory_behavior
+
+HEAR rule
+AS
+  kinder(ROOT)
+  GAP
+  suffix(porno OR pornos OR pornografie OR pornographie)
+
+HEAR rule
+AS
+  kipo(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  ALIAS(pedo)
+  pado
+  AFTER(phil OR phile OR philer OR philen OR philie OR file)
+  (WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  grooming(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  cp
+  AFTER(mega OR pack OR nz OR dropbox OR ordner OR link OR content OR gb OR tb)
+  (WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  jailbait(WHOLE)
+
+HEAR rule
+AS
+  pthc(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  nacktbild(ROOT)
+  suffix(er OR NONE)
+  GAP
+  ALSO(von OR vom)
+  GAP
+  MAYBE function(declarative)
+  GAP
+  function(vulnerable)
+
+REALM vokalklassen_mit_vorverlagertem_einsatz_preshipped_vowel_classes
+LET function(1) BE a
+LET function(2) BE e
+LET function(3) BE i
+LET function(4) BE o
+LET function(5) BE u
+LET function(6) BE y
+LET function(7) BE a OR e
+LET function(8) BE a OR i
+LET function(9) BE a OR o
+LET function(10) BE a OR u
+LET function(11) BE a OR y
+LET function(12) BE e OR i
+LET function(13) BE e OR o
+LET function(14) BE e OR u
+LET function(15) BE e OR y
+LET function(16) BE i OR o
+LET function(17) BE i OR u
+LET function(18) BE i OR y
+LET function(19) BE o OR u
+LET function(20) BE o OR y
+LET function(21) BE u OR y
+LET function(22) BE a OR e OR i
+LET function(23) BE a OR e OR o
+LET function(24) BE a OR e OR u
+LET function(25) BE a OR e OR y
+LET function(26) BE a OR i OR o
+LET function(27) BE a OR i OR u
+LET function(28) BE a OR i OR y
+LET function(29) BE a OR o OR u
+LET function(30) BE a OR o OR y
+LET function(31) BE a OR u OR y
+LET function(32) BE e OR i OR o
+LET function(33) BE e OR i OR u
+LET function(34) BE e OR i OR y
+LET function(35) BE e OR o OR u
+LET function(36) BE e OR o OR y
+LET function(37) BE e OR u OR y
+LET function(38) BE i OR o OR u
+LET function(39) BE i OR o OR y
+LET function(40) BE i OR u OR y
+LET function(41) BE o OR u OR y
+LET function(42) BE a OR e OR i OR o
+LET function(43) BE a OR e OR i OR u
+LET function(44) BE a OR e OR i OR y
+LET function(45) BE a OR e OR o OR u
+LET function(46) BE a OR e OR o OR y
+LET function(47) BE a OR e OR u OR y
+LET function(48) BE a OR i OR o OR u
+LET function(49) BE a OR i OR o OR y
+LET function(50) BE a OR i OR u OR y
+LET function(51) BE a OR o OR u OR y
+LET function(52) BE e OR i OR o OR u
+LET function(53) BE e OR i OR o OR y
+LET function(54) BE e OR i OR u OR y
+LET function(55) BE e OR o OR u OR y
+LET function(56) BE i OR o OR u OR y
+LET function(57) BE a OR e OR i OR o OR u
+LET function(58) BE a OR e OR i OR o OR y
+LET function(59) BE a OR e OR i OR u OR y
+LET function(60) BE a OR e OR o OR u OR y
+LET function(61) BE a OR i OR o OR u OR y
+LET function(62) BE e OR i OR o OR u OR y
+LET function(63) BE a OR e OR i OR o OR u OR y

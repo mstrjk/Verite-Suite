@@ -1,0 +1,418 @@
+DEFINE sh AS selfharm
+DEFINE ea AS abuse
+
+
+
+
+REALM classi_classes
+LET function(vulnerable) BE bambino OR bambina OR bambini OR bambine OR bimbo OR bimba OR piccolo OR piccola OR piccolino OR piccolina OR minore OR minorenne OR figlio OR figlia OR ragazzino OR ragazzina OR nipote OR nipotino OR nipotina OR neonato OR infante OR cucciolo
+LET function(declarative) BE un OR uno OR una OR il OR lo OR la OR i OR gli OR le OR mio OR mia OR miei OR mie OR tuo OR tua OR suo OR sua OR questo OR quel OR quello OR quella OR certo OR qualche
+LET function(accuse) BE sei un OR sei una OR sei un vero OR sei una vera OR sei proprio OR che gran OR che razza di OR sembri un OR sembri una OR fai il OR fai la OR ti comporti da OR smettila di fare OR pezzo di OR stai cercando OR sei a caccia di OR di merda OR del cazzo OR sei proprio un OR maledetto OR maledetta OR schifoso OR schifosa OR brutto frocio
+LET function(seeking) BE ce l'hai OR mi serve OR cerco OR cercasi OR dammi OR passami OR mandami OR inviami OR dove trovo OR dove scarico OR dove si trova OR chi ha OR chi vende OR voglio OR vorrei OR compro OR vendo OR scambio OR baratto OR scaricare OR download OR linka OR droppa OR dropbox OR mega OR cartella OR collezione OR raccolta OR archivio OR leakato OR immagini OR video OR clip OR contenuti OR in privato OR in pvt
+
+REALM insulti_razziali_ed_etnici_racial_and_ethnic_slurs
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  negr(ROOT)
+  suffix(o OR a OR i OR e OR accio OR accia)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  zingar(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  marocchin(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  terron(ROOT)
+  suffix(e OR i OR a)
+
+HEAR rule
+AS
+  ALIAS(terun)
+  terun(WHOLE)
+
+HEAR rule
+AS
+  polenton(ROOT)
+  suffix(e OR i OR a)
+
+HEAR rule
+AS
+  crucc(ROOT)
+  suffix(o OR hi)
+
+HEAR rule
+AS
+  mangiarane(WHOLE)
+
+HEAR rule
+AS
+  muso(ROOT)
+  GAP
+  suffix(giallo OR gialli)
+
+HEAR rule
+AS
+  ching(ROOT)
+  GAP
+  suffix(chong)
+
+HEAR rule
+AS
+  kike(WHOLE)
+  suffix(s)
+
+REALM abilismo_ableist
+
+HEAR rule
+AS
+  mongoloid(ROOT)
+  suffix(e OR i)
+
+HEAR rule
+AS
+  mongo(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  mongol(ROOT)
+  suffix(o OR a OR i)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  ritardat(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  handicappat(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  spastic(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  autistic(ROOT)
+  suffix(o OR a OR i OR e)
+
+REALM anti_lgbt
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  ALIAS(froscio)
+  ALIAS(froscione)
+  froc(ROOT)
+  suffix(io OR ia OR i OR e OR ione OR ioni OR etto OR aggine)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  finocchi(ROOT)
+  suffix(o OR i)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  ALIAS(recchione)
+  ALIAS(recchioni)
+  ALIAS(arrecchione)
+  ALIAS(arricchione)
+  ricchion(ROOT)
+  suffix(e OR i)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  checc(ROOT)
+  suffix(a OR e)
+
+HEAR rule
+AS
+  culatton(ROOT)
+  suffix(e OR i)
+
+HEAR rule
+AS
+  culattin(ROOT)
+  suffix(a OR o OR e OR i)
+
+HEAR rule
+AS
+  bucaiol(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  buson(ROOT)
+  suffix(e OR i)
+
+REALM autolesionismo_self_harm_sh_y_selfharmpossibility_non_e_un_attacco_not_an_attack
+
+HEAR rule
+AS
+  kys(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ammazzati(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ucciditi(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ALIAS(suicidatevi)
+  suicidati(WHOLE)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  ALIAS(levati)
+  togliti
+  GAP
+  la(ROOT)
+  GAP
+  suffix(vita)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  fatti(ROOT)
+  GAP
+  suffix(fuori)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  vai
+  GAP
+  a(ROOT)
+  GAP
+  suffix(morire OR crepare OR impiccarti OR suicidarti)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  tagliati(ROOT)
+  GAP
+  ALSO(le OR i)
+  GAP
+  suffix(vene OR polsi)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  bevi(ROOT)
+  GAP
+  ALSO(la)
+  GAP
+  suffix(candeggina OR varechina)
+  FLAG(sh YES)
+
+HEAR rule
+AS
+  buttati(ROOT)
+  GAP
+  ALSO(dal OR giu dal)
+  GAP
+  suffix(balcone OR ponte OR tetto OR finestra)
+  FLAG(sh YES)
+
+REALM subire_abusi_experiencing_abuse_ea_y_experiencingabusepossibility_chi_parla_e_una_vittima_the_speaker_is_a_victim
+
+HEAR rule
+AS
+  mi
+  GAP
+  ha(ROOT)
+  GAP
+  suffix(violentato OR violentata OR stuprato OR stuprata OR abusato OR abusata OR molestato OR molestata OR toccato OR toccata OR picchiato OR picchiata)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  mi
+  GAP
+  hanno(ROOT)
+  GAP
+  suffix(violentata OR violentato OR stuprata OR stuprato OR abusata OR abusato OR toccata OR toccato)
+  FLAG(ea YES)
+
+HEAR rule
+AS
+  sono
+  GAP
+  stat(ROOT)
+  suffix(o OR a)
+  GAP
+  suffix(violentato OR violentata OR stuprato OR stuprata OR abusato OR abusata)
+  FLAG(ea YES)
+
+REALM minori_e_comportamento_predatorio_minors_and_predatory_behavior
+
+HEAR rule
+AS
+  pedopornografia(WHOLE)
+
+HEAR rule
+AS
+  pedoporno(WHOLE)
+
+HEAR rule
+AS
+  pornografia(ROOT)
+  GAP
+  suffix(minorile)
+
+HEAR rule
+AS
+  BEFORE(function(accuse))
+  pedofil(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  adesca(ROOT)
+  suffix(re OR mento OR tore OR ndo)
+  GAP
+  MAYBE function(declarative)
+  GAP
+  function(vulnerable)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  cp
+  AFTER(mega OR pack OR nz OR dropbox OR cartella OR link OR materiale OR foto OR video OR gb OR tb)
+  (WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  loli(WHOLE)
+  suffix(con OR cons OR s)
+
+HEAR rule
+AS
+  shota(WHOLE)
+
+HEAR rule
+AS
+  pthc(WHOLE)
+
+HEAR rule
+AS
+  BEFORE(function(seeking))
+  appena(ROOT)
+  GAP
+  suffix(maggiorenne OR maggiorenni)
+
+REALM vocabolario_sessuale_sexual_vocabulary
+
+HEAR rule
+AS
+  sborr(ROOT)
+  suffix(a OR are OR ata OR ato OR ando OR o OR one)
+
+HEAR rule
+AS
+  eiacul(ROOT)
+  suffix(are OR azione OR a OR ato OR ando)
+
+HEAR rule
+AS
+  masturb(ROOT)
+  suffix(arsi OR azione OR are OR o OR ato OR ando)
+
+HEAR rule
+AS
+  arrapat(ROOT)
+  suffix(o OR a OR i OR e)
+
+HEAR rule
+AS
+  arrapante(WHOLE)
+
+HEAR rule
+AS
+  incest(ROOT)
+  suffix(o OR uoso OR uosa)
+
+HEAR rule
+AS
+  sexting(WHOLE)
+
+HEAR rule
+AS
+  camgirl(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  gangbang(WHOLE)
+  suffix(s)
+
+HEAR rule
+AS
+  succhia(ROOT)
+  GAP
+  ALSO(mi OR il OR lo)
+  GAP
+  suffix(cazzo OR pene OR uccello)
+
+REALM classi_di_vocali_preincluse_preshipped_vowel_classes
+LET function(1) BE a
+LET function(2) BE e
+LET function(3) BE i
+LET function(4) BE o
+LET function(5) BE u
+LET function(6) BE a OR e
+LET function(7) BE a OR i
+LET function(8) BE a OR o
+LET function(9) BE a OR u
+LET function(10) BE e OR i
+LET function(11) BE e OR o
+LET function(12) BE e OR u
+LET function(13) BE i OR o
+LET function(14) BE i OR u
+LET function(15) BE o OR u
+LET function(16) BE a OR e OR i
+LET function(17) BE a OR e OR o
+LET function(18) BE a OR e OR u
+LET function(19) BE a OR i OR o
+LET function(20) BE a OR i OR u
+LET function(21) BE a OR o OR u
+LET function(22) BE e OR i OR o
+LET function(23) BE e OR i OR u
+LET function(24) BE e OR o OR u
+LET function(25) BE i OR o OR u
+LET function(26) BE a OR e OR i OR o
+LET function(27) BE a OR e OR i OR u
+LET function(28) BE a OR e OR o OR u
+LET function(29) BE a OR i OR o OR u
+LET function(30) BE e OR i OR o OR u
+LET function(31) BE a OR e OR i OR o OR u

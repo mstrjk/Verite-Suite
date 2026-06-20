@@ -1,0 +1,10 @@
+# Si.EVE config updates, applied in order, top to bottom.
+# One version id per line. For each id <V> listed here, the plugin looks for a per-config diff at
+#   sieve/updates/<V>/config_<lang>.eve
+# and appends it to the owner's deployed config_<lang>.eve under a one-line banner:
+#   REALM ____ added during <V> eve update ____
+# The banner is the idempotency marker: present means that version is already applied, so the update
+# runs at most once and an owner who deletes an appended rule keeps it deleted. A diff is just EVE
+# statements (HEAR/MATCH/LET/DEFINE/...) -- no eve: header, no banner; the plugin writes the banner.
+# A config with no matching diff for a listed version is skipped. Blank lines and #-comments here are
+# ignored. Leave this list empty until the first post-1.0.0 rule update ships.

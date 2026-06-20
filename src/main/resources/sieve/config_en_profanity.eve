@@ -1,0 +1,419 @@
+DEFINE pf AS profanity
+
+
+REALM profanity_classes
+
+REALM fuck
+
+HEAR rule
+AS
+  ALIAS(phuck)
+  ALIAS(fuk)
+  ALIAS(fukk)
+  ALIAS(fucc)
+  ALIAS(fuq)
+  ALIAS(fuqq)
+  ALIAS(fvck)
+  ALIAS(fck)
+  ALIAS(fk)
+  fuck(WHOLE)
+  suffix(NONE OR er OR ers OR ing OR in OR ed OR d OR s OR up OR ups OR ery OR able OR athon)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  fuck(ROOT)
+  GAP
+  suffix(face OR faces OR head OR heads OR headed OR wit OR wits OR nut OR nuts OR ass OR boy OR boys OR tard OR tards OR off OR offs OR buddy OR stick OR sticks OR hole OR holes OR wad OR wads)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ALIAS(mother)
+  ALIAS(dick)
+  ALIAS(cunt)
+  ALIAS(ass)
+  ALIAS(bull)
+  ALIAS(butt)
+  ALIAS(fist)
+  ALIAS(mind)
+  ALIAS(brain)
+  ALIAS(head)
+  ALIAS(hate)
+  ALIAS(scum)
+  ALIAS(goat)
+  ALIAS(rat)
+  ALIAS(bum)
+  ALIAS(fat)
+  ALIAS(pig)
+  ALIAS(mouth)
+  ALIAS(skull)
+  ALIAS(cluster)
+  ALIAS(chuckle)
+  ALIAS(gang)
+  ALIAS(sister)
+  ALIAS(finger)
+  ALIAS(super)
+  ALIAS(stupid)
+  ALIAS(titty)
+  ALIAS(pussy)
+  ALIAS(horse)
+  dumb
+  GAP
+  fuck(WHOLE)
+  suffix(NONE OR er OR ers OR ing OR ed OR s)
+  FLAG(pf YES)
+
+REALM shit
+
+HEAR rule
+AS
+  ALIAS(bullshit)
+  ALIAS(horseshit)
+  ALIAS(dipshit)
+  ALIAS(dogshit)
+  ALIAS(dumbshit)
+  ALIAS(gobshit)
+  ALIAS(apeshit)
+  ALIAS(batshit)
+  ALIAS(chickenshit)
+  ALIAS(jackshit)
+  ALIAS(holyshit)
+  ALIAS(diddlyshit)
+  ALIAS(birdshit)
+  ALIAS(catshit)
+  ALIAS(cowshit)
+  ALIAS(pigshit)
+  ALIAS(ratshit)
+  ALIAS(hogshit)
+  ALIAS(goatshit)
+  ALIAS(duckshit)
+  ALIAS(cockshit)
+  ALIAS(cuntshit)
+  ALIAS(dickshit)
+  ALIAS(fuckshit)
+  ALIAS(scumshit)
+  ALIAS(crapshit)
+  ALIAS(whoreshit)
+  ALIAS(cheapshit)
+  ALIAS(supershit)
+  ALIAS(ripshit)
+  ALIAS(fatshit)
+  ALIAS(beshit)
+  ALIAS(unshit)
+  ALIAS(shyt)
+  ALIAS(shvt)
+  shit(WHOLE)
+  suffix(NONE OR e OR s OR es OR ed OR ted OR ing OR ting OR ter OR ters OR ty OR tier OR tiest OR tiness OR less OR lessly)
+  NEVER(shitake OR shitakes OR shiitake OR shiitakes OR shittake OR mishit OR mishits OR mishitting OR peshitta OR shittim OR shittimwood OR englishite)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  shit(ROOT)
+  GAP
+  suffix(head OR heads OR heel OR heels OR hole OR holes OR house OR houses OR load OR loads OR list OR lists OR storm OR storms OR bag OR bags OR can OR cans OR canned OR canning OR face OR faced OR faces OR work OR works OR kicker OR kickers OR show OR fit)
+  NEVER(shittim OR shittimwood)
+  FLAG(pf YES)
+
+REALM cock
+
+HEAR rule
+AS
+  ALIAS(kock)
+  ALIAS(kok)
+  cock(ROOT)
+  GAP
+  suffix(sucker OR suckers OR sucking OR womble OR wombles OR muncher OR munchers OR munch OR face OR faces OR tease OR teaser OR teasers OR head OR heads OR nose OR knocker OR knockers OR wad OR wads OR job OR jobs OR and GAP balls OR and GAP ball GAP torture)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ALIAS(bigcock)
+  ALIAS(bigkock)
+  ALIAS(bigkok)
+  ALIAS(smallcock)
+  ALIAS(smallkock)
+  ALIAS(smallkok)
+  ALIAS(giantcock)
+  ALIAS(giantkock)
+  ALIAS(giantkok)
+  ALIAS(hugecock)
+  ALIAS(hugekock)
+  ALIAS(hugekok)
+  ALIAS(monstercock)
+  ALIAS(monsterkock)
+  ALIAS(monstertcock)
+  ALIAS(horsekock)
+  ALIAS(horsekok)
+  horsecock(WHOLE)
+  suffix(s)
+  FLAG(pf YES)
+
+REALM dick
+
+HEAR rule
+AS
+  ALIAS(dik)
+  ALIAS(dic)
+  dick(ROOT)
+  GAP
+  suffix(head OR heads OR cheese OR sucker OR suckers OR sucking OR face OR faces OR wad OR wads OR weed OR bag OR bags OR hole OR holes OR nose OR brain OR brains OR wit OR wits OR tard OR tards OR whistle OR muncher OR munchers OR and GAP balls)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ALIAS(bigdick)
+  ALIAS(smalldick)
+  ALIAS(giantdick)
+  ALIAS(hugedick)
+  ALIAS(monsterdick)
+  ALIAS(horsedick)
+  ALIAS(limpdick)
+  limpdick(WHOLE)
+  suffix(s)
+  FLAG(pf YES)
+
+REALM cock_and_ball_torture
+
+HEAR rule
+AS
+  cbt(WHOLE)
+  FLAG(pf YES)
+
+REALM weird_sex
+
+HEAR rule
+AS
+  ALIAS(bukake)
+  ALIAS(bukakke)
+  ALIAS(bukkakke)
+  ALIAS(bukaki)
+  ALIAS(bukkaki)
+  bukkake(WHOLE)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  blumpkin(WHOLE)
+  suffix(s)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ALIAS(feltch)
+  felch(WHOLE)
+  suffix(NONE OR ing OR ed OR er OR ers OR s)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  fleshlight(WHOLE)
+  suffix(s)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  dirty
+  GAP
+  sanchez(WHOLE)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  rusty
+  GAP
+  trombone(WHOLE)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  donkey
+  GAP
+  punch(WHOLE)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  limp(ROOT)
+  GAP
+  suffix(biscuit OR biskit OR bizkit OR bizcuit OR biscut)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  cum
+  GAP
+  biscuit(WHOLE)
+  FLAG(pf YES)
+
+REALM ass
+
+HEAR rule
+AS
+  ass(WHOLE)
+  suffix(NONE OR es OR hole OR holes OR hat OR hats OR clown OR clowns OR face OR faces OR wipe OR wipes OR wad OR wads OR munch OR muncher OR munchers OR bag OR bags OR butt OR crack OR cracks OR hat)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ass(ROOT)
+  GAP
+  suffix(hole OR holes OR hat OR hats OR clown OR clowns OR face OR faces OR wipe OR wipes OR wad OR wads OR munch OR muncher OR munchers OR bag OR bags OR crack OR cracks)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  ALIAS(dumb)
+  ALIAS(jack)
+  ALIAS(smart)
+  ALIAS(wise)
+  ALIAS(fat)
+  ALIAS(lard)
+  ALIAS(bad)
+  ALIAS(hard)
+  ALIAS(candy)
+  ALIAS(half)
+  ALIAS(kick)
+  ALIAS(lame)
+  ALIAS(punk)
+  ALIAS(bitch)
+  ALIAS(big)
+  ALIAS(broke)
+  ALIAS(dead)
+  ALIAS(fake)
+  ALIAS(gay)
+  ALIAS(grown)
+  ALIAS(head)
+  ALIAS(raggedy)
+  ALIAS(sorry)
+  ALIAS(stupid)
+  ALIAS(weird)
+  ALIAS(whole)
+  ALIAS(pussy)
+  ALIAS(cracker)
+  ALIAS(crazy)
+  ALIAS(nasty)
+  ALIAS(lazy)
+  ALIAS(sick)
+  ALIAS(slow)
+  ALIAS(short)
+  ALIAS(old)
+  ALIAS(pale)
+  ALIAS(white)
+  ALIAS(monkey)
+  ALIAS(scary)
+  ALIAS(spooky)
+  ALIAS(stank)
+  ALIAS(stupid)
+  dumb
+  GAP
+  ass(WHOLE)
+  suffix(NONE OR es OR ed)
+  FLAG(pf YES)
+
+REALM bitch
+
+HEAR rule
+AS
+  ALIAS(biatch)
+  ALIAS(biotch)
+  ALIAS(beotch)
+  ALIAS(beeotch)
+  ALIAS(bietch)
+  ALIAS(bytch)
+  ALIAS(sumbitch)
+  ALIAS(superbitch)
+  ALIAS(megabitch)
+  ALIAS(ultrabitch)
+  ALIAS(godbitch)
+  ALIAS(emperorbitch)
+  ALIAS(emporerbitch)
+  ALIAS(kingbitch)
+  ALIAS(queenbitch)
+  ALIAS(rockbitch)
+  ALIAS(outbitch)
+  bitch(WHOLE)
+  suffix(NONE OR es OR ed OR in OR en OR ing OR y OR ier OR iest OR ily OR iness OR inesses OR ery OR eries OR fest OR fests OR slap OR slaps)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  son
+  GAP
+  of
+  GAP
+  a
+  GAP
+  bitch(WHOLE)
+  suffix(NONE OR es)
+  FLAG(pf YES)
+
+REALM douche
+
+HEAR rule
+AS
+  ALIAS(doosh)
+  ALIAS(douch)
+  douche(WHOLE)
+  suffix(NONE OR s OR y OR bag OR bags OR baggery OR canoe OR canoes OR nozzle OR nozzles OR wad OR wads)
+  FLAG(pf YES)
+
+REALM twat
+
+HEAR rule
+AS
+  ALIAS(twatt)
+  twat(WHOLE)
+  suffix(NONE OR s OR ted OR ting OR face OR faces OR waffle OR waffles)
+  FLAG(pf YES)
+
+REALM wank
+
+HEAR rule
+AS
+  wank(WHOLE)
+  suffix(NONE OR s OR ed OR er OR ers OR ing OR stain OR stains OR y)
+  FLAG(pf YES)
+
+REALM bollocks
+
+HEAR rule
+AS
+  ALIAS(bollox)
+  ALIAS(ballsack)
+  ALIAS(bollok)
+  bollocks(WHOLE)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  bollock(WHOLE)
+  suffix(NONE OR s OR ed OR ing)
+  FLAG(pf YES)
+
+REALM pussy
+
+HEAR rule
+AS
+  ALIAS(pussi)
+  ALIAS(pussie)
+  pussy(WHOLE)
+  suffix(NONE OR s OR hole OR holes)
+  NEVER(pussyfoot OR pussy willow OR pussycat OR pussy cat OR pussy willows OR pussyfooting OR pussyfooted)
+  FLAG(pf YES)
+
+HEAR rule
+AS
+  pussies(WHOLE)
+  NEVER(pussyfoot)
+  FLAG(pf YES)
+
+REALM prick
+
+HEAR rule
+AS
+  prick(WHOLE)
+  suffix(NONE OR s OR head OR heads OR face)
+  NEVER(pinprick OR prickle OR prickles OR prickled OR prickling OR prickly OR prickle OR prick up OR prick your OR prick the OR needle prick OR finger prick)
+  FLAG(pf YES)

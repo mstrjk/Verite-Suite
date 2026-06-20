@@ -1,0 +1,16 @@
+build-cm/
+build-jni/
+build/
+out/
+java/native/
+*.exe
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.a
+test/golden_*.tsv
+test/config_en.eve
+JniTest.java
+runlinux.sh

@@ -1,0 +1,188 @@
+VERITÉ - END USER LICENSE AGREEMENT
+Copyright (c) 2025-2026 teacommontea
+
+
+1. THE SOFTWARE
+
+The Verité Suite (Sauver, Doux, and Chasse) is provided by teacommontea on an
+as-is basis. By installing, running, or otherwise using any of our modules, you
+agree to the terms set out below. If you do not agree to these terms, do not use
+the software.
+
+
+2. ASSUMPTION OF RISK
+
+By using any of our modules, you assume the risks of doing so. The software is
+provided without warranty of any kind, express or implied, including but not
+limited to the warranties of merchantability, fitness for a particular purpose,
+and non-infringement. teacommontea does not warrant that the software will be
+uninterrupted, error-free, or free of vulnerabilities, and does not guarantee
+that it will detect every form of abuse or prevent every unwanted action on your
+server.
+
+You are responsible for how you deploy and configure the software, for the
+moderation and enforcement decisions you make with it, and for complying with
+the laws and platform rules that apply to you. In no event shall teacommontea be
+liable for any claim, damages, or other liability arising from or in connection
+with the software or its use, including loss of data, loss of players, or
+disruption to your server.
+
+
+3. LICENSING
+
+Verité is open source. Two licenses apply, by component:
+
+  EVE is licensed under the MIT License. This permits you to use, copy, modify,
+  merge, publish, distribute, sublicense, and sell copies of EVE, subject to the
+  conditions in that license — chiefly that the copyright notice and permission
+  notice are preserved. The full terms are in eve/LICENSE.
+
+  The Verité Suite (Sauver, Doux, and Chasse) is licensed under the GNU Lesser
+  General Public License, version 2.1 or, at your option, any later version.
+  This grants you the freedom to use, study, share, and modify the software, on
+  the condition that modifications to the covered components remain under the
+  same license and that recipients receive these freedoms in turn. The full
+  terms are in COPYING.LESSER (with the accompanying GPL terms in COPYING).
+
+Where this agreement and a component's license differ, that component's license
+governs your rights to use, copy, modify, and distribute it. Nothing in this
+agreement is intended to limit the rights granted to you under the MIT License
+or the LGPL.
+
+
+4. YOUR MODIFICATIONS
+
+teacommontea makes great efforts to ensure that the base functionality of the
+software meets the necessary expectations of the average Minecraft server owner.
+By making use of the editable settings.yml file, you assume responsibility for
+any issues arising from your modification of the software's settings.
+
+Because of the nature of the open-source licenses under which the Verité Suite
+is released, teacommontea cannot be made responsible for any issues arising from
+personal modifications made directly to the software's codebase. If you choose to
+modify the software's code, you do so under the presumption that you have the
+necessary knowledge and expertise to do so safely, and you agree to hold
+teacommontea harmless for any issues that may arise from your own changes.
+
+
+5. RESPONSIBILITY TO REPORT
+
+teacommontea encourages the responsible reporting of vulnerabilities and abuse.
+If you discover a security vulnerability or an abuse vector in any of our
+modules, please report it to us promptly and responsibly using GitHub's Issue
+Tracker. We will work with you to address the issue and may provide recognition
+for your contribution, bearing no monetary compensation. We reserve the right to
+disclose the vulnerability publicly after a reasonable period, especially if it
+poses a significant risk to users.
+
+Bug reporting is an optional way to contribute to the project, but teacommontea
+makes no promises regarding rewards, recognition, or the timeline for addressing
+reported issues. We appreciate and value all contributions, but we cannot
+guarantee any specific outcome from reporting vulnerabilities or abuse vectors.
+
+Suggestions or code submissions delivered by you over GitHub Issues should be
+assumed to be incorporated into the project and licensed under the same terms as
+the rest of the project, unless you explicitly state otherwise in your
+submission. By submitting suggestions or code, you grant teacommontea a
+perpetual, irrevocable, royalty-free license to use, modify, and distribute your
+contributions as part of the project.
+
+
+6. TELEMETRY (send_reports)
+
+Verité is an evolving project. We already have plans for future modules and
+features, and are pre-emptively addressing one flag already mentioned in the
+preset settings.yml. "send_reports" is a setting that, if enabled, will send
+reports of Verité's actions directly to teacommontea. This is an optional flag
+that is disabled by default, and is only intended to allow us to gather data on
+how the software is behaving on servers.
+
+Up to, and not exceeding the following, we may collect data on:
+- The number of times each module is triggered, and the actions taken by the
+  software.
+- The types of actions taken by the software, and the contexts in which they
+  occur.
+- The frequency and distribution of different types of abuse or unwanted actions
+  that the software is designed to address.
+- The performance and resource usage of the software on different servers and
+  configurations.
+- The effectiveness of the software in preventing abuse and unwanted actions, as
+  measured by the reduction in such incidents on servers that use it.
+- Global player movement data, up to 20 seconds before and after a module is
+  triggered.
+- The types of players involved in incidents that trigger the software, such as
+  their playtime, client, version, and other non-identifying information.
+
+Your data, if send_reports is enabled, is anonymized and aggregated, and will
+not be used to identify you or your server. We will not use this data for any
+purpose other than improving the Verité Suite. Your data will not be sold,
+shared, or used for any other purpose.
+
+We anonymize and aggregate this data in the following ways:
+- We do not collect UUIDs.
+- We do not collect IP addresses.
+- We do not collect player names.
+- We do not collect server names or locations.
+- We do not collect files or logs from your server.
+- We do not collect any other information that could be used to identify you or
+  your server.
+
+We want to know what happened, not who was involved.
+
+The maximum extent of what we allow ourselves to collect:
+- Block locations
+- Player locations
+- Player gamemodes
+- Player inventories
+- Player actions
+- Player interactions
+- Player movement data
+- Player client and version data
+- Player playtime data
+- Module trigger data
+- Module action data
+- Module context data
+
+If at any time we decide to collect additional data, we will only do so in a way
+that requires a re-download of the software, and we will make reasonable efforts
+to disclose these changes in future EULAs, release notes, and on GitHub.
+
+
+7. VERIFICATION
+
+Where this agreement may inadvertently conflict with reality, teacommontea has
+made the Verité Suite open source to allow users to verify the software's
+behaviour and the accuracy of this agreement. If you find a discrepancy between
+this agreement and the software's actual behavior, please report it to us using
+GitHub's Issue Tracker. We will investigate the issue and make any necessary
+corrections to this agreement or the software itself.
+
+
+8. CHANGES TO THIS AGREEMENT
+
+By using the Verité Suite, you acknowledge that we may add new features or
+modules in the future, and that we may update this agreement to reflect those
+changes. We will make reasonable efforts to notify users of any significant
+changes to this agreement, but it is your responsibility to review this
+agreement periodically for updates. Your continued use of the Verité Suite after
+any such changes constitutes your acceptance of the new terms.
+
+Sections 6 and 8 govern the optional telemetry service teacommontea operates and
+the terms of this agreement; they do not modify, limit, or revoke the rights
+granted to you under the MIT License or the LGPL. The open-source licenses for
+any version you have already received remain in effect regardless of later
+changes to this agreement.
+
+
+9. ACKNOWLEDGEMENT
+
+BY USING THE SOFTWARE IN ANY FORM OR CAPACITY, YOU ACKNOWLEDGE THAT YOU HAVE READ
+AND UNDERSTAND THE TERMS OUTLINED IN THIS END USER LICENSE AGREEMENT. IN THE
+EVENT THAT YOU HAVE CHOSEN TO USE THE SOFTWARE WITHOUT READING THIS AGREEMENT,
+AND DO NOT MAKE REASONABLE EFFORTS TO FAMILIARIZE YOURSELF WITH ITS TERMS OR
+REACH OUT TO THE AUTHORS FOR CLARIFICATION, YOU ASSUME ALL RISKS ASSOCIATED WITH
+YOUR USE OF THE SOFTWARE, INCLUDING BUT NOT LIMITED TO ANY DAMAGES, LOSSES, OR
+OTHER LIABILITIES THAT MAY ARISE FROM YOUR USE OF THE SOFTWARE, AND YOU AGREE TO
+INDEMNIFY AND HOLD HARMLESS THE AUTHORS AND CONTRIBUTORS OF THE SOFTWARE FROM ANY
+CLAIMS, DAMAGES, OR OTHER LIABILITIES THAT MAY ARISE FROM YOUR USE OF THE
+SOFTWARE.
