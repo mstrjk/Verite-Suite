@@ -298,34 +298,3 @@ AS
   suffix(cu OR buceta OR rabo OR piroca)
 
 REALM classes_de_vogais_preincluidas_preshipped_vowel_classes
-LET function(1) BE a
-LET function(2) BE e
-LET function(3) BE i
-LET function(4) BE o
-LET function(5) BE u
-LET function(6) BE a OR e
-LET function(7) BE a OR i
-LET function(8) BE a OR o
-LET function(9) BE a OR u
-LET function(10) BE e OR i
-LET function(11) BE e OR o
-LET function(12) BE e OR u
-LET function(13) BE i OR o
-LET function(14) BE i OR u
-LET function(15) BE o OR u
-LET function(16) BE a OR e OR i
-LET function(17) BE a OR e OR o
-LET function(18) BE a OR e OR u
-LET function(19) BE a OR i OR o
-LET function(20) BE a OR i OR u
-LET function(21) BE a OR o OR u
-LET function(22) BE e OR i OR o
-LET function(23) BE e OR i OR u
-LET function(24) BE e OR o OR u
-LET function(25) BE i OR o OR u
-LET function(26) BE a OR e OR i OR o
-LET function(27) BE a OR e OR i OR u
-LET function(28) BE a OR e OR o OR u
-LET function(29) BE a OR i OR o OR u
-LET function(30) BE e OR i OR o OR u
-LET function(31) BE a OR e OR i OR o OR u

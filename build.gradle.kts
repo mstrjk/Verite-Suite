@@ -9,7 +9,7 @@ version = "1.0.0"
 
 java {
 
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 repositories {
@@ -21,8 +21,7 @@ repositories {
 dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
 
-    compileOnly(fileTree("server-libs") { include("paper-*.jar") })
-    compileOnly(fileTree("server-libs/libraries") { include("**/*.jar") })
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
 
     implementation("org.tukaani:xz:1.9")
 

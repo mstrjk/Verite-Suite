@@ -217,6 +217,26 @@ static void expandOne(const std::string& skel, size_t i, std::string& acc,
             expandOne(skel, j, acc, out, reg);
             acc.resize(old);
         }
+    } else if (skel[i] == '[') {
+        size_t close = skel.find(']', i);
+        if (close == std::string::npos) { acc.push_back(skel[i]); expandOne(skel, i + 1, acc, out, reg); acc.pop_back(); return; }
+        std::string inner = skel.substr(i + 1, close - (i + 1));
+        size_t s = 0;
+        while (true) {
+            size_t comma = inner.find(',', s);
+            std::string member = inner.substr(s, comma == std::string::npos ? std::string::npos : comma - s);
+            size_t b = member.find_first_not_of(" \t");
+            size_t e = member.find_last_not_of(" \t");
+            if (b != std::string::npos) {
+                std::string m = member.substr(b, e - b + 1);
+                size_t old = acc.size();
+                acc += m;
+                expandOne(skel, close + 1, acc, out, reg);
+                acc.resize(old);
+            }
+            if (comma == std::string::npos) break;
+            s = comma + 1;
+        }
     } else {
         acc.push_back(skel[i]);
         expandOne(skel, i + 1, acc, out, reg);

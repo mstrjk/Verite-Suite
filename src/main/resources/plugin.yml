@@ -1,30 +1,20 @@
 name: Verite
 version: 1.0.0
-main: teacommontea.veritechasse.VeritePlugin
-api-version: '1.21'
+main: teacommontea.VeritePlugin
+api-version: '1.18'
 author: teacommontea
-description: "Accuracy-first, privacy-respecting Minecraft anticheat plus chat filter. Two components in one self-contained jar (its own Netty/NMS packet layer, no PacketEvents): Veritechasse, the anticheat engine, and Veritedoux, the Si.EVE chat filter. Each toggles independently in settings.yml."
+description: "Privacy-respecting Minecraft chat filter plus moderation suite. Two components in one self-contained jar: Veritedoux, the Si.EVE chat filter, and Veritesauver, the moderation suite (bans, mutes, warnings, kicks, alt tracking, manual captcha). Each toggles independently in settings.yml."
 softdepend: [floodgate]
 
-# Self-contained: the anticheat reads packets via its own Netty/NMS layer (no PacketEvents), and the
-# tuning store is a plain binary KV (no SQL engine). No depend, no separate install.
+# Self-contained: the tuning store is a plain binary KV (no SQL engine). No depend, no separate install.
 
 commands:
   # /verite is the single plugin-administration command. The moderation verbs an admin reaches for in
-  # the moment -- alerts, captcha, replay -- stay standalone (same namespace as /ban), never under /verite.
+  # the moment (captcha, ban, ...) stay standalone (same namespace as /ban), never under /verite.
   verite:
     description: "Verite admin: status, info, reload, count <player>."
     usage: "/<command> [status|info|reload|count <player>]"
     aliases: [vt]
-  alerts:
-    description: "Toggle Verite cheat-detection alerts for yourself."
-    usage: "/<command>"
-  replay:
-    description: "Replay a flagged player's movement. /replay <player> [id] | stop."
-    usage: "/<command> <player> [id]"
-  captcha:
-    description: "Manually challenge a player. /captcha <standard|detailed> <player|*>."
-    usage: "/<command> <standard|detailed> <player|*>"
 
   # ---- Veritésauver (moderation) ----
   # The staff moderation verbs, standalone in the same namespace as the rest. One executor
@@ -57,6 +47,10 @@ commands:
     description: "Kick an online player."
     usage: "/<command> <player> [-s] [reason]"
     permission: veritesauver.kick
+  captcha:
+    description: "Manually challenge a player. /captcha <standard|detailed> <player|*>."
+    usage: "/<command> <standard|detailed> <player|*>"
+    permission: veritesauver.captcha
   warn:
     description: "Warn a player."
     usage: "/<command> <player> [-s] [reason]"
@@ -172,14 +166,11 @@ commands:
     permission: veritesauver.slowmode
 
 permissions:
-  verite.alerts:
-    description: Receive cheat-detection alerts.
-    default: op
   verite.admin:
     description: Use Verite admin commands.
     default: op
   verite.bypass:
-    description: Bypass all checks.
+    description: Exempt from captcha challenges.
     default: false
 
   # ---- Veritésauver (moderation) ----
@@ -197,6 +188,9 @@ permissions:
     default: op
   veritesauver.kick:
     description: Kick players.
+    default: op
+  veritesauver.captcha:
+    description: Manually challenge a player with a captcha.
     default: op
   veritesauver.warn:
     description: Warn players.
@@ -216,12 +210,16 @@ permissions:
   veritesauver.unban:
     description: Unban players (any).
     default: op
+    children:
+      veritesauver.unban.own: true
   veritesauver.unban.own:
     description: Unban only punishments you issued.
     default: false
   veritesauver.unmute:
     description: Unmute players (any).
     default: op
+    children:
+      veritesauver.unmute.own: true
   veritesauver.unmute.own:
     description: Unmute only punishments you issued.
     default: false
@@ -299,10 +297,13 @@ permissions:
     default: op
   veritesauver.notify.broadcast:
     description: See public punishment broadcasts.
-    default: true
+    default: false
   veritesauver.notify.silent:
     description: See silent (-s) punishment broadcasts.
     default: op
   veritesauver.notify.dupeip_join:
     description: Be alerted when an alt of a punished account joins.
     default: op
+  veritesauver.notify.captcha:
+    description: See captcha pass/fail announcements.
+    default: false

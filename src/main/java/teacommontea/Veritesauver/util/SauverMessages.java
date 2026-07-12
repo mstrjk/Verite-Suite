@@ -21,7 +21,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 
-import teacommontea.veritechasse.util.Messages;
+import teacommontea.util.Messages;
 
 public final class SauverMessages {
 

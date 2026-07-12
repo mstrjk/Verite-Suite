@@ -215,7 +215,21 @@ public final class Sieve {
         if (message == null || message.isEmpty() || EVE == null) {
             return Result.CLEAN;
         }
-        String lower = normalize(message);
+
+        Result worst = Result.CLEAN;
+        for (String cand : candidates(message)) {
+            Result r = checkAll(cand);
+            if (r == Result.SELF_HARM || r == Result.ABUSE) {
+                return r;
+            }
+            if (r != Result.CLEAN) {
+                worst = (worst == Result.CLEAN) ? r : worse(worst, r);
+            }
+        }
+        return worst;
+    }
+
+    private static Result checkAll(String lower) {
         String[] allWords = lower.split("\\s+");
         if (allWords.length > MAX_SCAN_WORDS) {
             Result worst = Result.CLEAN;
@@ -281,6 +295,14 @@ public final class Sieve {
                         if (r != Result.CLEAN) {
                             return r;
                         }
+                    }
+                }
+
+                String dense = SieveSegment.denseStrip(raw);
+                if (dense != null) {
+                    Result r = matchLine(dense, 1, tokenLangs, lower);
+                    if (r != Result.CLEAN) {
+                        return r;
                     }
                 }
             }
@@ -367,12 +389,37 @@ public final class Sieve {
         return (settings == null || settings.catBlock) ? Result.BLOCK : Result.CLEAN;
     }
 
+    private static final long DEDUP_WINDOW_MS = 750;
+    private static final java.util.Map<String, long[]> DEDUP_STAMP = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final java.util.Map<String, Result> DEDUP_VERDICT = new java.util.concurrent.ConcurrentHashMap<>();
+
+    private static String dedupKey(UUID player, String message) {
+        return player + "\0" + message;
+    }
+
     public static Result check(UUID player, String message) {
+        String key = dedupKey(player, message);
+        long now = System.currentTimeMillis();
+        long[] prev = DEDUP_STAMP.get(key);
+        if (prev != null && now - prev[0] < DEDUP_WINDOW_MS) {
+            Result cached = DEDUP_VERDICT.get(key);
+            if (cached != null) {
+                return cached;
+            }
+        }
+
         Result r = check(message);
         if (r != Result.CLEAN && store != null && (settings == null || settings.logFlags)) {
             store.record(player, r, message);
         }
         r = applyStones(player, message, r);
+
+        DEDUP_STAMP.put(key, new long[]{now});
+        DEDUP_VERDICT.put(key, r);
+        if (DEDUP_STAMP.size() > 512) {
+            DEDUP_STAMP.entrySet().removeIf(e -> now - e.getValue()[0] > DEDUP_WINDOW_MS);
+            DEDUP_VERDICT.keySet().retainAll(DEDUP_STAMP.keySet());
+        }
         return r;
     }
 
@@ -412,28 +459,97 @@ public final class Sieve {
 
     private static final java.util.Map<Integer, Character> CONFUSABLES = new java.util.HashMap<>();
 
-    private static String normalize(String message) {
-        boolean entity = settings == null || settings.entityStrip;
-        boolean homo = settings == null || settings.homoglyphFold;
-        String s = foldAccents((entity ? stripEntities(message) : message).toLowerCase());
+    private static final java.util.Set<Integer> DELETE = new java.util.HashSet<>();
+
+    private record Seq(String from, char[] to) {}
+    private static final java.util.List<Seq> SEQS = new java.util.ArrayList<>();
+
+    private static final int MAX_CANDIDATES = 32;
+
+    private static boolean tablesLoaded() {
+        return !CONFUSABLES.isEmpty() || !SEQS.isEmpty() || !DELETE.isEmpty();
+    }
+
+    private static String stripDeletes(String s) {
+        boolean any = false;
+        for (int i = 0; i < s.length() && !any; ) {
+            int cp = s.codePointAt(i);
+            i += Character.charCount(cp);
+            if (DELETE.contains(cp)) any = true;
+        }
+        if (!any) {
+            return s;
+        }
         StringBuilder b = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); ) {
             int cp = s.codePointAt(i);
             i += Character.charCount(cp);
-            Character home = homo ? CONFUSABLES.get(cp) : null;
-            if (home != null) {
-                b.append(home.charValue());
-            } else if (cp <= 0xFFFF) {
-                b.append(fold((char) cp));
+            if (!DELETE.contains(cp)) b.appendCodePoint(cp);
+        }
+        return b.toString();
+    }
+
+    private static java.util.List<String> candidates(String message) {
+        boolean entity = settings == null || settings.entityStrip;
+        boolean homo = settings == null || settings.homoglyphFold;
+        String base = stripDeletes(foldAccents((entity ? stripEntities(message) : message).toLowerCase()));
+
+        java.util.List<StringBuilder> cands = new java.util.ArrayList<>();
+        cands.add(new StringBuilder());
+        for (int i = 0; i < base.length(); ) {
+            Seq hit = homo ? seqAt(base, i) : null;
+            char[] targets;
+            int adv;
+            if (hit != null) {
+                targets = hit.to();
+                adv = hit.from().length();
             } else {
-                b.appendCodePoint(cp);
+                int cp = base.codePointAt(i);
+                adv = Character.charCount(cp);
+                Character home = homo && cp <= 0xFFFF ? CONFUSABLES.get(cp) : null;
+                if (home != null) {
+                    targets = new char[]{home.charValue()};
+                } else if (cp <= 0xFFFF) {
+                    targets = new char[]{(char) cp};
+                } else {
+
+                    for (StringBuilder sb : cands) sb.appendCodePoint(cp);
+                    i += adv;
+                    continue;
+                }
+            }
+            if (targets.length == 1 || cands.size() >= MAX_CANDIDATES) {
+                char t = targets[0];
+                for (StringBuilder sb : cands) sb.append(t);
+            } else {
+                java.util.List<StringBuilder> forked = new java.util.ArrayList<>(cands.size() * targets.length);
+                for (char t : targets) {
+                    if (forked.size() >= MAX_CANDIDATES) break;
+                    for (StringBuilder sb : cands) {
+                        if (forked.size() >= MAX_CANDIDATES) break;
+                        forked.add(new StringBuilder(sb).append(t));
+                    }
+                }
+                cands = forked;
+            }
+            i += adv;
+        }
+        java.util.LinkedHashSet<String> out = new java.util.LinkedHashSet<>();
+        for (StringBuilder sb : cands) out.add(reduceRuns(sb.toString(), 2));
+        return new java.util.ArrayList<>(out);
+    }
+
+    private static Seq seqAt(String base, int i) {
+        for (Seq s : SEQS) {
+            if (base.startsWith(s.from(), i)) {
+                return s;
             }
         }
-        return reduceRuns(b.toString(), 2);
+        return null;
     }
 
     private static void loadConfusables(Plugin plugin) {
-        if (!CONFUSABLES.isEmpty()) {
+        if (tablesLoaded()) {
             return;
         }
         try (InputStream in = plugin.getResource("sieve/confusables.txt")) {
@@ -443,18 +559,62 @@ public final class Sieve {
             try (BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = r.readLine()) != null) {
-                    int tab = line.indexOf('\t');
-                    if (tab <= 0 || tab + 1 >= line.length()) {
+                    if (line.isEmpty() || line.charAt(0) == '#') {
                         continue;
                     }
-                    try {
-                        CONFUSABLES.put(Integer.parseInt(line.substring(0, tab)), line.charAt(tab + 1));
-                    } catch (NumberFormatException ignored) {
+                    if (line.startsWith("!DELETE ")) {
+                        parseDelete(line.substring(8));
+                    } else if (line.startsWith("!SEQ ")) {
+                        parseSeq(line.substring(5));
+                    } else if (line.charAt(0) == '=' && line.length() >= 2) {
+                        parseClass(line);
                     }
                 }
             }
+            SEQS.sort((a, b) -> b.from().length() - a.from().length());
         } catch (Exception e) {
             plugin.getLogger().warning("[Verite] Si.EVE confusables table failed to load: " + e.getMessage());
+        }
+    }
+
+    private static void parseDelete(String rest) {
+        for (String tok : rest.trim().split("\\s+")) {
+            if (tok.isEmpty()) continue;
+            int dots = tok.indexOf("..");
+            try {
+                if (dots >= 0) {
+                    int a = Integer.parseInt(tok.substring(0, dots), 16);
+                    int z = Integer.parseInt(tok.substring(dots + 2), 16);
+                    for (int cp = a; cp <= z; cp++) DELETE.add(cp);
+                } else {
+                    DELETE.add(Integer.parseInt(tok, 16));
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+    }
+
+    private static void parseSeq(String rest) {
+        for (String tok : rest.trim().split("\\s+")) {
+            int gt = tok.indexOf('>');
+            if (gt <= 0 || gt + 1 >= tok.length()) continue;
+            String from = tok.substring(0, gt);
+            String targets = tok.substring(gt + 1).replace("|", "");
+            if (targets.isEmpty()) continue;
+            SEQS.add(new Seq(from, targets.toCharArray()));
+        }
+    }
+
+    private static void parseClass(String line) {
+        char proto = line.charAt(1);
+        int sp = line.indexOf(' ', 2);
+        if (sp < 0) return;
+        for (String tok : line.substring(sp + 1).trim().split("\\s+")) {
+            if (tok.isEmpty()) continue;
+            try {
+                CONFUSABLES.put(Integer.parseInt(tok, 16), proto);
+            } catch (NumberFormatException ignored) {
+            }
         }
     }
 
@@ -480,40 +640,6 @@ public final class Sieve {
             }
         }
         return b.toString();
-    }
-
-    private static char fold(char c) {
-        switch (c) {
-            case 'а': return 'a';
-            case 'е': return 'e';
-            case 'о': return 'o';
-            case 'р': return 'p';
-            case 'с': return 'c';
-            case 'х': return 'x';
-            case 'у': return 'y';
-            case 'к': return 'k';
-            case 'м': return 'm';
-            case 'н': return 'h';
-            case 'т': return 't';
-            case 'в': return 'b';
-            case 'ο': return 'o';
-            case 'α': return 'a';
-            case 'ρ': return 'p';
-            case 'ε': return 'e';
-            case 'ι': return 'i';
-            case 'ν': return 'v';
-            case '0': return 'o';
-            case '1': return 'i';
-            case '3': return 'e';
-            case '4': return 'a';
-            case '5': return 's';
-            case '7': return 't';
-            case '@': return 'a';
-            case '$': return 's';
-            case '!': return 'i';
-            case '+': return 't';
-            default: return c;
-        }
     }
 
     private static boolean hasRepeat(String s) {

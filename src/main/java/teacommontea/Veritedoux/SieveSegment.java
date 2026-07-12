@@ -371,6 +371,43 @@ final class SieveSegment {
     private static final int DEOB_MAX_DENSE = 14;
     private static final int DEOB_MAX_SLOTS = 8;
 
+    static String denseStrip(String token) {
+        Map<Character, Integer> freq = new HashMap<>();
+        for (int i = 0; i < token.length(); i++) {
+            char c = token.charAt(i);
+            if (!Character.isLetterOrDigit(c)) {
+                freq.merge(c, 1, Integer::sum);
+            }
+        }
+        char filler = 0;
+        int max = 0;
+        for (Map.Entry<Character, Integer> e : freq.entrySet()) {
+            if (e.getValue() > max) {
+                max = e.getValue();
+                filler = e.getKey();
+            }
+        }
+        if (max < 2) {
+            return null;
+        }
+        StringBuilder dense = new StringBuilder();
+        int slots = 0;
+        for (int i = 0; i < token.length(); i++) {
+            char c = token.charAt(i);
+            if (c == filler) {
+                int p = dense.length();
+                if (p > 0) slots++;
+            } else if (Character.isLetter(c)) {
+                dense.append(c);
+            }
+        }
+        String d = dense.toString();
+        if (d.length() < 3 || d.length() > DEOB_MAX_DENSE || slots > DEOB_MAX_SLOTS) {
+            return null;
+        }
+        return d;
+    }
+
     private static String repairSearch(String s, List<Integer> slots, int idx, int inserted, String vowels) {
         if (isKnown(s)) {
             return s;
