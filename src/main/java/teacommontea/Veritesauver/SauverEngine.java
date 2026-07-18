@@ -49,6 +49,16 @@ public final class SauverEngine {
         if (targetUuid == null && targetIp == null) {
             return Result.fail("A punishment needs a target uuid or IP.");
         }
+
+        if (targetUuid != null) {
+            Entry active = type == Entry.Type.BAN ? dao().activeBan(targetUuid)
+                    : type == Entry.Type.MUTE ? dao().activeMute(targetUuid) : null;
+            if (active != null && active.active()) {
+                Entry superseded = active.withRemoval(executorUuid, executorName, "superseded by a new " + type.id());
+                dao().save(superseded);
+                SauverEvents.fireRemoved(superseded);
+            }
+        }
         long now = System.currentTimeMillis();
         long dateEnd = durationMillis == Entry.PERMANENT ? Entry.PERMANENT : now + durationMillis;
         long id = dao().nextId();
@@ -150,6 +160,15 @@ public final class SauverEngine {
         long dateEnd = rung.duration() == Entry.PERMANENT ? Entry.PERMANENT : now + rung.duration();
         long id = dao().nextId();
         boolean enforced = type == Entry.Type.BAN || type == Entry.Type.MUTE;
+
+        if (enforced) {
+            Entry active = type == Entry.Type.BAN ? dao().activeBan(targetUuid) : dao().activeMute(targetUuid);
+            if (active != null && active.active()) {
+                Entry superseded = active.withRemoval(executorUuid, executorName, "superseded by a new " + type.id());
+                dao().save(superseded);
+                SauverEvents.fireRemoved(superseded);
+            }
+        }
         Entry e = new Entry(
             id, String.valueOf(id), type, targetUuid, null, rung.reason(),
             executorUuid, executorName, null, null, null,

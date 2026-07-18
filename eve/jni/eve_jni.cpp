@@ -91,6 +91,11 @@ JNIEXPORT jstring JNICALL Java_teacommontea_eve_Eve_nScan(
         std::string cand = jstr(env, candidate);
         std::string full = jstr(env, fullLine);
 
+        static const size_t MAX_CAND = 64;
+        if (cand.size() > MAX_CAND) {
+            return env->NewStringUTF("");
+        }
+
         std::string out;
         for (size_t i = 0; i < p->rules.size(); i++) {
             const Rule& r = p->rules[i];

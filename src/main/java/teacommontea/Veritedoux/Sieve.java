@@ -42,6 +42,20 @@ public final class Sieve {
     private static final int FP_MIN_LEN = 6;
     private static final java.util.Map<String, Result> FINGERPRINTS = new java.util.HashMap<>();
 
+    private static final java.util.Map<String, String> FP_SOURCE = new java.util.HashMap<>();
+    private static final java.util.Map<String, Boolean> FP_COLLISION_CHECKED = new java.util.concurrent.ConcurrentHashMap<>();
+
+    private static boolean fpTrusted(String fp) {
+        Boolean cached = FP_COLLISION_CHECKED.get(fp);
+        if (cached != null) {
+            return cached;
+        }
+        String source = FP_SOURCE.get(fp);
+        boolean trusted = source != null && !SieveSegment.fingerprintCollides(fp, source);
+        FP_COLLISION_CHECKED.put(fp, trusted);
+        return trusted;
+    }
+
     private Sieve() {}
 
     private record Config(String file, String lang) {}
@@ -73,23 +87,29 @@ public final class Sieve {
             }
             String body = readConfigText(plugin, config.file());
             if (body == null) continue;
-            SieveSegment.setVowels(config.lang(), eveVowels(body));
+            SieveSegment.setVowels(config.lang(), eveVowels(config.lang()));
             maxWords = Math.max(maxWords, eveMaxWords(body));
         }
         EVE = loadEve(plugin);
 
         FINGERPRINTS.clear();
+        FP_COLLISION_CHECKED.clear();
+        FP_SOURCE.clear();
         int wordCount = 0;
         if (EVE != null) {
             for (teacommontea.eve.Eve.ConcreteWord cw : EVE.concreteWords()) {
                 String w = cw.word();
                 wordCount++;
+                if (w.length() < FP_MIN_LEN) {
+                    continue;
+                }
                 Result cat = cw.flag("sh", false) ? Result.SELF_HARM
                         : cw.flag("ea", false) ? Result.ABUSE
                         : cw.flag("pf", false) ? Result.PROFANITY : Result.BLOCK;
-                if (w.length() >= FP_MIN_LEN && !SieveSegment.fingerprintCollides(fingerprint(w), w)) {
-                    FINGERPRINTS.merge(fingerprint(w), cat, Sieve::worse);
-                }
+
+                String fp = fingerprint(w);
+                FINGERPRINTS.merge(fp, cat, Sieve::worse);
+                FP_SOURCE.putIfAbsent(fp, w);
             }
         }
         int ruleCount = EVE == null ? 0 : EVE.ruleCount();
@@ -129,25 +149,19 @@ public final class Sieve {
         }
     }
 
-    private static String eveVowels(String body) {
-        java.util.LinkedHashSet<Character> set = new java.util.LinkedHashSet<>();
-        for (String line : body.split("\n")) {
-            String t = line.strip();
-            if (t.toLowerCase().indexOf("let function(") != 0) continue;
-            int open = t.indexOf('('), close = t.indexOf(')', open);
-            if (open < 0 || close < 0) continue;
-            String name = t.substring(open + 1, close).trim();
-            if (name.isEmpty() || !name.chars().allMatch(Character::isDigit)) continue;
-            int be = t.toLowerCase().indexOf(" be ");
-            if (be < 0) continue;
-            for (String m : t.substring(be + 4).split("\\s+OR\\s+|\\s+or\\s+")) {
-                m = m.strip();
-                if (m.length() == 1 && Character.isLetter(m.charAt(0))) set.add(Character.toLowerCase(m.charAt(0)));
-            }
+    private static String eveVowels(String lang) {
+        switch (lang) {
+            case "english":
+            case "french":
+            case "german":
+                return "aeiouy";
+            case "spanish":
+            case "italian":
+            case "portuguese":
+                return "aeiou";
+            default:
+                return "aeiou";
         }
-        StringBuilder sb = new StringBuilder();
-        for (char c : set) sb.append(c);
-        return sb.toString();
     }
 
     private static int eveMaxWords(String body) {
@@ -216,9 +230,10 @@ public final class Sieve {
             return Result.CLEAN;
         }
 
+        String rawVeto = foldAccents(message.toLowerCase());
         Result worst = Result.CLEAN;
         for (String cand : candidates(message)) {
-            Result r = checkAll(cand);
+            Result r = checkAll(cand, rawVeto);
             if (r == Result.SELF_HARM || r == Result.ABUSE) {
                 return r;
             }
@@ -229,7 +244,7 @@ public final class Sieve {
         return worst;
     }
 
-    private static Result checkAll(String lower) {
+    private static Result checkAll(String lower, String rawVeto) {
         String[] allWords = lower.split("\\s+");
         if (allWords.length > MAX_SCAN_WORDS) {
             Result worst = Result.CLEAN;
@@ -237,19 +252,20 @@ public final class Sieve {
                 int end = Math.min(start + MAX_SCAN_WORDS, allWords.length);
                 StringBuilder w = new StringBuilder();
                 for (int i = start; i < end; i++) { if (i > start) w.append(' '); w.append(allWords[i]); }
-                Result r = checkWindow(w.toString());
+                Result r = checkWindow(w.toString(), rawVeto);
                 if (r != Result.CLEAN) worst = worst == Result.CLEAN ? r : worst;
                 if (end == allWords.length) break;
             }
             return worst;
         }
-        return checkWindow(lower);
+        return checkWindow(lower, rawVeto);
     }
 
-    private static Result checkWindow(String lower) {
+    private static Result checkWindow(String lower, String rawVeto) {
+        String vetoLine = lower + "\n" + rawVeto;
         List<double[]> tokenLangs = SieveLang.label(lower);
 
-        Result direct = matchLine(lower, 1, tokenLangs, lower);
+        Result direct = matchLine(lower, 1, tokenLangs, vetoLine);
         if (direct != Result.CLEAN) {
             return direct;
         }
@@ -257,12 +273,12 @@ public final class Sieve {
         if (hasRepeat(lower)) {
             String capped = reduceRuns(lower, 2);
             if (!capped.equals(lower)) {
-                Result r = matchLine(capped, 1, SieveLang.label(capped), lower);
+                Result r = matchLine(capped, 1, SieveLang.label(capped), vetoLine);
                 if (r != Result.CLEAN) return r;
             }
             String single = reduceRuns(lower, 1);
             if (!single.equals(lower) && !single.equals(capped)) {
-                Result r = matchLine(single, 1, SieveLang.label(single), lower);
+                Result r = matchLine(single, 1, SieveLang.label(single), vetoLine);
                 if (r != Result.CLEAN) return r;
             }
         }
@@ -272,8 +288,9 @@ public final class Sieve {
             for (int wi = 0; wi < fpWords.length; wi++) {
                 String w = fpWords[wi];
                 if (w.length() >= FP_MIN_LEN && w.chars().allMatch(Character::isLetter)) {
-                    Result fp = FINGERPRINTS.get(fingerprint(w));
-                    if (fp != null && !langAllows(tokenLangAt(tokenLangs, wi), w)) {
+                    String key = fingerprint(w);
+                    Result fp = FINGERPRINTS.get(key);
+                    if (fp != null && fpTrusted(key) && !langAllows(tokenLangAt(tokenLangs, wi), w)) {
                         return fp;
                     }
                 }
@@ -291,7 +308,7 @@ public final class Sieve {
                 for (String cand : candidates) {
                     String recovered = SieveSegment.deobfuscate(cand);
                     if (recovered != null) {
-                        Result r = matchLine(recovered, 1, tokenLangs, lower);
+                        Result r = matchLine(recovered, 1, tokenLangs, vetoLine);
                         if (r != Result.CLEAN) {
                             return r;
                         }
@@ -300,7 +317,7 @@ public final class Sieve {
 
                 String dense = SieveSegment.denseStrip(raw);
                 if (dense != null) {
-                    Result r = matchLine(dense, 1, tokenLangs, lower);
+                    Result r = matchLine(dense, 1, tokenLangs, vetoLine);
                     if (r != Result.CLEAN) {
                         return r;
                     }
@@ -309,7 +326,7 @@ public final class Sieve {
 
             if (settings == null || settings.segmentation) {
                 for (String segged : SieveSegment.segmentLines(lower)) {
-                    Result r = matchLine(segged, SEG_MIN_LEN, SieveLang.label(segged), lower);
+                    Result r = matchLine(segged, SEG_MIN_LEN, SieveLang.label(segged), vetoLine);
                     if (r != Result.CLEAN) {
                         return r;
                     }

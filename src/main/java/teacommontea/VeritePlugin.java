@@ -50,8 +50,11 @@ public final class VeritePlugin extends JavaPlugin
 
     private boolean douxEnabled;
     private boolean sauverEnabled;
+    private boolean vanishEnabled;
 
     private teacommontea.veritedoux.intercept.ChatIntercept chatIntercept;
+
+    private teacommontea.veritevanish.Vanish vanish;
 
     private Sauver sauver;
     private SauverCommands sauverCommands;
@@ -92,6 +95,11 @@ public final class VeritePlugin extends JavaPlugin
         } else {
             getLogger().info("[Verite] Veritesauver (moderation) disabled in settings.yml.");
         }
+        if (vanishEnabled) {
+            bringUpVanish();
+        } else {
+            getLogger().info("[Verite] Veritevanish (staff vanish) disabled in settings.yml.");
+        }
 
         registerCommand("verite", this);
 
@@ -102,6 +110,18 @@ public final class VeritePlugin extends JavaPlugin
             if (captcha != null) {
                 registerCommand("captcha", new CaptchaCommand(captcha, messages));
             }
+        }
+        if (vanishEnabled && vanish != null) {
+            registerCommand("vanish", new teacommontea.veritevanish.VanishCommand(vanish));
+        }
+    }
+
+    private void bringUpVanish() {
+        try {
+            this.vanish = teacommontea.veritevanish.Vanish.enable(this);
+        } catch (Exception e) {
+            getLogger().warning("[Verite] Veritevanish failed to start (vanish off): " + e.getMessage());
+            this.vanish = null;
         }
     }
 
@@ -122,6 +142,10 @@ public final class VeritePlugin extends JavaPlugin
             sauver.disable();
             sauver = null;
         }
+        if (vanish != null) {
+            vanish.disable();
+            vanish = null;
+        }
     }
 
     private void readComponentToggles() {
@@ -130,11 +154,13 @@ public final class VeritePlugin extends JavaPlugin
             YamlConfiguration y = YamlConfiguration.loadConfiguration(f);
             this.douxEnabled = y.getBoolean("components.veritedoux.enabled", true);
             this.sauverEnabled = y.getBoolean("components.veritesauver.enabled", true);
+            this.vanishEnabled = y.getBoolean("components.veritevanish.enabled", true);
             Messages.setPrefix(y.getString("prefix", Messages.DEFAULT_PREFIX));
         } else {
 
             this.douxEnabled = true;
             this.sauverEnabled = true;
+            this.vanishEnabled = true;
         }
     }
 
@@ -147,6 +173,8 @@ public final class VeritePlugin extends JavaPlugin
             getLogger().warning("[Verite] could not extract " + targetName + ": " + e.getMessage());
         }
     }
+
+    private static final long FILTER_LOAD_BUDGET_MS = 30_000;
 
     private void bringUpFilter() {
         for (String config : SIEVE_CONFIGS) {
@@ -162,15 +190,58 @@ public final class VeritePlugin extends JavaPlugin
 
         teacommontea.veritedoux.SelfHeal.healEve(this, SIEVE_CONFIGS);
 
-        SieveCommands.loadAll(this);
+        if (!loadFilterBounded()) {
+
+            douxEnabled = false;
+            return;
+        }
+
         try {
             Sieve.enableStore(SieveStore.open(this));
         } catch (Exception e) {
             getLogger().warning("[Verite] Si.EVE store off (count() will return 0): " + e.getMessage());
         }
 
-        getServer().getPluginManager().registerEvents(new ChatEventGuard(), this);
-        this.chatIntercept = teacommontea.veritedoux.intercept.ChatIntercept.install(this);
+    }
+
+    private boolean loadFilterBounded() {
+        final Throwable[] failure = new Throwable[1];
+        Thread worker = new Thread(() -> {
+            try {
+
+                SieveCommands.loadAll(this);
+            } catch (Throwable t) {
+                failure[0] = t;
+            }
+        }, "Verite-FilterLoad");
+        worker.setDaemon(true);
+        worker.start();
+        try {
+            worker.join(FILTER_LOAD_BUDGET_MS);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            getLogger().severe("[Verite] filter load interrupted during boot:");
+            ie.printStackTrace();
+            return false;
+        }
+
+        if (worker.isAlive()) {
+
+            StringBuilder where = new StringBuilder("[Verite] chat-filter load exceeded "
+                    + FILTER_LOAD_BUDGET_MS + "ms budget and STALLED. Worker stack at timeout:\n");
+            for (StackTraceElement el : worker.getStackTrace()) {
+                where.append("    at ").append(el).append('\n');
+            }
+            getLogger().severe(where.toString());
+            worker.interrupt();
+            return false;
+        }
+        if (failure[0] != null) {
+            getLogger().severe("[Verite] chat-filter load FAILED with an exception:");
+            failure[0].printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private static final class ChatEventGuard implements org.bukkit.event.Listener {

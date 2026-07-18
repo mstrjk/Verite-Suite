@@ -93,6 +93,7 @@ AS
   ALIAS(gooc)
   gook(WHOLE)
   PLURAL
+  NEVER(600k OR 900k OR 60ok OR 90ok OR 6ook OR 9ook OR 600ks OR 900ks)
 
 HEAR rule
 AS

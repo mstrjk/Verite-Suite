@@ -8,12 +8,37 @@ prefix: "<#555555>[<#B1C7F0>Verité<#555555>]<reset>"
 # Turn one off and the other still runs. Both default `on`.
 
 components:
-  veritechasse: # Anti-cheat module.
-    enabled: true
   veritedoux: # Chat filter module.
     enabled: true
   veritesauver: # Moderation module.
     enabled: true
+  veritevanish: # Staff vanish module.
+    enabled: true
+
+vanish:
+  features:
+    fake_message: true
+    actionbar: true
+    fly: true
+    invulnerability: true
+    effects: true
+    gamemode: true
+    ride_entity: true
+    silent_container: true
+    inventory_inspect: true
+    server_ping: true
+    ghost: true
+    prevent_chat: true
+    prevent_pickup: true
+    prevent_drop: true
+    prevent_interact: true
+    prevent_block_break: true
+    prevent_block_place: true
+    prevent_target: true
+    prevent_damage: true
+    prevent_food: true
+    prevent_buckets: true
+    prevent_advancement: true
 
 # ---- Veritésauver (moderation) ----
 
@@ -84,79 +109,6 @@ sauver:
         ip_template: false
     warn-templates: {}
     kick-templates: {}
-
-# ---- Veritéchasse (anticheat) ----
-
-alerts:
-  format: '<white>%player% <#FF5555>failed <#B1C7F0>%check%<white>.'
-  print-to-console: true
-  console-format: '[Verité] %player% failed %check%'
-
-# Flip any line to false to disable that family.
-checks:
-
-# Disabling any of these groups will disable the entire editor below.
-# Switch to "disabled" to turn off the whole group.
-  combat: enabled
-  movement: enabled
-  world: enabled
-  packets: enabled
-
-# Disabling any of these will disable the individual check,
-# but not the group. Use this to fine-tune your anticheat.
-# Switch to "false" to turn off the individual check.
-  # combat
-  reach: true # Hitting entities from beyond reach.
-  hitbox: true # Attacks that miss the target's hitbox.
-  killaura: true # Inhuman combat rotations and snapping.
-  criticals: true # Faking critical hits without jumping.
-  autoclicker: true # Inhuman click speed or consistency.
-  autoblock: true # Attacking while blocking with a shield.
-  velocity: true # Taking reduced knockback (anti-velocity).
-  fastbow: true # Firing a bow faster than it can draw.
-  length: true # Interacting beyond vanilla reach.
-  # movement
-  speed: true # Moving faster than legal horizontally.
-  motion: true # Replayed or fabricated movement deltas.
-  sprint: true # Sprinting while moving backwards.
-  strafe: true # Air control beyond what vanilla allows.
-  step: true # Stepping up more than a vanilla step.
-  highjump: true # Jumping higher or longer than vanilla.
-  fastclimb: true # Climbing ladders/vines too fast (spider).
-  wallclimb: true # Climbing a non-climbable wall.
-  antilevitation: true # Descending while under levitation.
-  nofall: true # Avoiding fall damage.
-  noslow: true # Not slowing in webs / while using items.
-  phase: true # Clipping through solid blocks (noclip).
-  vclip: true # Single-tick vertical clip through blocks.
-  flight: true # Invalid vertical motion (fly).
-  elytrafly: true # Non-vanilla elytra hover or lift.
-  boatfly: true # Boats ignoring gravity.
-  jesus: true # Walking on / not sinking in water.
-  # world
-  scaffold: true # Inhuman bridging / placement.
-  tower: true # Towering straight up too fast.
-  airplace: true # Placing blocks against nothing.
-  nuker: true # Breaking many blocks at once / out of view.
-  fastplace: true # Placing blocks faster than a human.
-  fastbreak: true # Breaking a block faster than its break time.
-  fastuse: true # Finishing item use faster than vanilla.
-  autofarm: true # Robotic farming cadence / silent farming.
-  autofish: true # Robotically consistent fishing reactions.
-  timer: true # Running game time faster than real time.
-  # packets
-  blink: true # Withholding then flushing movement packets.
-  baritone: true # Pathfinding bot movement signature.
-  autowalk: true # Walking with frozen rotation.
-  groundspoof: true # Faking onGround while airborne.
-  spoofer: true # Withholding transaction/ping responses.
-  entityspoof: true # Riding / controlling illegal mounts.
-  chunkoverloader: true # Crossing chunks at an unrealistic rate.
-  voidbearer: true # Descending endlessly below the world.
-  guiinteract: true # Moving while a container GUI is open.
-  badpackets: true # Malformed or exploit movement packets.
-  hackedclient: true # Known cheat-client channels / brands.
-  inventory: true # Inventory clicks faster than humanly possible.
 
 # ---- Veritédoux (EVE chat filter) ----
 
@@ -274,7 +226,6 @@ stones:
 #    &name / function(name)   : drops the set's members in as options. Works as a check, a root, inline, or in BEFORE/NEVER.
 #    &!name / MAYBE function(name) : the function group, but optional (can be skipped).
 #    &name[^^] / function(name) (WHOLE) : give the members a marker. (WHOLE) = hard standalone words; (ROOT) = plain options.
-#    &1..&63  : pre-shipped vowel slots (members are vowels). Only used inside SKELETON.
 #    &s / PLURAL : the rich plural set (s/z/es/ies/ing/ed/er/ers/y/...). Write PLURAL once at the end.
 
 # ---- Comments ----
@@ -313,14 +264,20 @@ stones:
 
 # ---- Misspelling catcher ----
 
-#    {skel:f&42gg&42t} / SKELETON(42:42(f!gg!t)) : a skeleton. The N:N map fills each ! slot with that
-#    vowel class, left to right. Expands to every vowel combo at load. Only for 4+ consonant words. Always test it.
+#    SKELETON(f[a,e,i,o]gg[a,e,i,o]t) : a skeleton. Each [a,e,i,o,...] bracket is a vowel slot filled by
+#    every listed letter; expands to every combo at load. Brackets mark slots, commas separate the
+#    choices. Only for 4+ consonant words. Always test it.
 
 # ---- Advanced roots (rarely needed) ----
 
 #    &verbs(#*)[*^] / function(verbs) GAP (ROOT) : function as root; every member is a root sharing the chain.
 #    [[re][tard*]][^^] / re[tard] (WHOLE)        : segmented root; the bracketed piece can start alone (tard) or with the prefix (retard).
 
+# Advanced docs are currently being worked on behind the scenes!
+# When they are ready, you'll see this toggle set to "TRUE".
+docs_exist_yet: FALSE
+# We apologise for the overflow of information in this config,
+# and are working hard to give a permanent home to this information.
 
 # How to say Verité:
 
@@ -333,3 +290,7 @@ stones:
 # Tay (as in "Tay-Tay the best queen ever")"
 
 # ---- And that's it! You've read the whole config, you little nerd, you! ----
+
+# (C)2026 EVE Fantastical / A subsidiary of MSTRJK Creative Solutions & Careers
+# EVE Fantastical is an MIT licenced RegEx replacement engine. EVE stands for "Evolutionary Vision Engine".
+# EVE is so advanced (without transformer based AI!) that it can parse and catch complex patterns in text with remarkable accuracy.

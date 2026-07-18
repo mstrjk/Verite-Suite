@@ -1,10 +1,10 @@
 name: Verite
-version: 1.0.0
+version: 1.1.1
 main: teacommontea.VeritePlugin
 api-version: '1.18'
 author: teacommontea
-description: "Privacy-respecting Minecraft chat filter plus moderation suite. Two components in one self-contained jar: Veritedoux, the Si.EVE chat filter, and Veritesauver, the moderation suite (bans, mutes, warnings, kicks, alt tracking, manual captcha). Each toggles independently in settings.yml."
-softdepend: [floodgate]
+description: "Privacy-respecting Minecraft chat filter, moderation suite, and staff vanish. Three components in one self-contained jar: Veritedoux, the Si.EVE chat filter; Veritesauver, the moderation suite (bans, mutes, warnings, kicks, alt tracking, manual captcha); and Veritevanish, staff vanish with a public API. Each toggles independently in settings.yml."
+softdepend: [floodgate, PlaceholderAPI, LuckPerms]
 
 # Self-contained: the tuning store is a plain binary KV (no SQL engine). No depend, no separate install.
 
@@ -15,6 +15,13 @@ commands:
     description: "Verite admin: status, info, reload, count <player>."
     usage: "/<command> [status|info|reload|count <player>]"
     aliases: [vt]
+
+  # ---- Veritevanish (staff vanish) ----
+  vanish:
+    description: "Toggle your vanish, or another player's with permission."
+    usage: "/<command> [player]"
+    permission: verite.vanish
+    aliases: [v]
 
   # ---- Veritésauver (moderation) ----
   # The staff moderation verbs, standalone in the same namespace as the rest. One executor

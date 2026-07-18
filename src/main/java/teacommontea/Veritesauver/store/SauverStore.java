@@ -61,8 +61,12 @@ public final class SauverStore {
     }
 
     public static SauverStore open(Plugin plugin) throws Exception {
+        return open(plugin, "sauver.bin");
+    }
+
+    public static SauverStore open(Plugin plugin, String fileName) throws Exception {
         plugin.getDataFolder().mkdirs();
-        SauverStore s = new SauverStore(new File(plugin.getDataFolder(), "sauver.bin"));
+        SauverStore s = new SauverStore(new File(plugin.getDataFolder(), fileName));
         s.load();
         return s;
     }

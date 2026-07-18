@@ -236,9 +236,7 @@ public final class SauverCommands implements CommandExecutor, TabCompleter {
                 ? (type == Entry.Type.BAN ? DEFAULT_BAN_REASON : DEFAULT_MUTE_REASON)
                 : String.join(" ", rest);
 
-        if (alreadyPunished(sender, type, target, parsed.targetName())) {
-            return;
-        }
+        boolean overwriting = (type == Entry.Type.BAN ? sauver.activeBan(target) : sauver.activeMute(target)) != null;
         String exempt = SauverExempt.blockReason(sender, target, type);
         if (exempt != null) {
             err(sender, "<#FF5555>" + exempt);
@@ -267,20 +265,9 @@ public final class SauverCommands implements CommandExecutor, TabCompleter {
         }
         SauverLimits.markUsed(sender, type, now);
         String dur = r.entry().permanent() ? "permanently" : "for <#FFFFFF>" + SauverFormat.fancyTime(r.entry().duration());
-        send(sender, "<#B1C7F0>You " + word + "ned <#FFFFFF>" + bestName(target, parsed.targetName())
+        String verb = overwriting ? "updated the " + word + " on" : word + "ned";
+        send(sender, "<#B1C7F0>You " + verb + " <#FFFFFF>" + bestName(target, parsed.targetName())
                 + " <#B1C7F0>" + dur + "<#B1C7F0>. <#FFFFFF>Reason: <#FFFFFF>" + reason + " <#FFFFFF>(#" + r.entry().randomId() + ")");
-    }
-
-    private boolean alreadyPunished(CommandSender sender, Entry.Type type, UUID target, String name) {
-        Entry existing = type == Entry.Type.BAN ? sauver.activeBan(target) : sauver.activeMute(target);
-        if (existing != null) {
-            String word = type == Entry.Type.BAN ? "banned" : "muted";
-            err(sender, "<#FFFFFF>" + name + " <#FF5555>is already " + word
-                    + " <#FFFFFF>(#" + existing.randomId() + ")<#FF5555>. Lift it first with <#FFFFFF>/un"
-                    + (type == Entry.Type.BAN ? "ban " : "mute ") + name + "<#FF5555>.");
-            return true;
-        }
-        return false;
     }
 
     private void issueIp(CommandSender sender, String[] args, Entry.Type type) {
